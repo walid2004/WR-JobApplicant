@@ -76,70 +76,54 @@ def run_application(job_id: str, assisted_mode: bool = False) -> Dict[str, Any]:
         })
         return result
 
-    cleanup_locks()
-    with sync_playwright() as p:
-        context = p.chromium.launch_persistent_context(
-            user_data_dir=SESSION_DIR,
-            headless=True,
-            viewport={"width": 1366, "height": 850},
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            args=[
-                "--disable-blink-features=AutomationControlled",
-                "--no-sandbox",
-                "--disable-dev-shm-usage"
-            ]
+    from core.automation.browser_manager import BrowserSessionManager
+    mgr = BrowserSessionManager(headless=not assisted_mode)
+    p_obj, context, page = mgr.start()
+
+    try:
+        if "linkedin.com" in job_url or portal == "linkedin":
+            adapter = LinkedInEasyApplyAdapter(page=page, llm_engine=llm, profile=profile)
+        elif "indeed.com" in job_url or "indeed.de" in job_url or portal == "indeed":
+            adapter = IndeedApplyAdapter(page=page, llm_engine=llm, profile=profile)
+        else:
+            adapter = GenericATSAdapter(page=page, llm_engine=llm, profile=profile)
+
+        result = adapter.apply(
+            job_url=job_url,
+            cv_pdf_path=cv_path,
+            anschreiben_pdf_path=anschreiben_path,
+            portfolio_pdf_path=portfolio_path,
+            assisted_mode=assisted_mode
         )
-        page = context.pages[0] if context.pages else context.new_page()
 
-        cookie_file = os.path.join(SESSION_DIR, "cookies.json")
-        if os.path.exists(cookie_file):
+        record_application({
+            "job_id": job_id,
+            "company": company,
+            "job_title": job_title,
+            "location": job.get("location", "Germany"),
+            "url": job_url,
+            "portal": portal,
+            "fit_score": job.get("fit_score", 0),
+            "status": result.get("status", "SUBMITTED"),
+            "cv_path": cv_path,
+            "anschreiben_path": anschreiben_path,
+            "screenshot_path": result.get("screenshot_path"),
+            "notes": result.get("message")
+        })
+
+        if assisted_mode:
             try:
-                with open(cookie_file, "r", encoding="utf-8") as f:
-                    saved_cookies = json.load(f)
-                if saved_cookies:
-                    context.add_cookies(saved_cookies)
-                    print(f"[*] Injected {len(saved_cookies)} authenticated session cookies.")
-            except Exception as ce:
-                print(f"[Warning] Cookie injection error: {ce}")
-
-        try:
-            if "linkedin.com" in job_url or portal == "linkedin":
-                adapter = LinkedInEasyApplyAdapter(page=page, llm_engine=llm, profile=profile)
-            elif "indeed.com" in job_url or "indeed.de" in job_url or portal == "indeed":
-                adapter = IndeedApplyAdapter(page=page, llm_engine=llm, profile=profile)
-            else:
-                adapter = GenericATSAdapter(page=page, llm_engine=llm, profile=profile)
-
-            result = adapter.apply(
-                job_url=job_url,
-                cv_pdf_path=cv_path,
-                anschreiben_pdf_path=anschreiben_path,
-                portfolio_pdf_path=portfolio_path,
-                assisted_mode=False
-            )
-
-            record_application({
-                "job_id": job_id,
-                "company": company,
-                "job_title": job_title,
-                "location": job.get("location", "Germany"),
-                "url": job_url,
-                "portal": portal,
-                "fit_score": job.get("fit_score", 0),
-                "status": result.get("status", "SUBMITTED"),
-                "cv_path": cv_path,
-                "anschreiben_path": anschreiben_path,
-                "screenshot_path": result.get("screenshot_path"),
-                "notes": result.get("message")
-            })
-
-            return result
-
-        finally:
-            try:
-                context.close()
+                page.wait_for_event("close", timeout=300000)
             except Exception:
                 pass
+
+        return result
+
+    finally:
+        try:
+            mgr.close()
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

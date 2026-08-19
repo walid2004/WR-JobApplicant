@@ -1216,10 +1216,10 @@
                     <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                     Delete
                   </button>
-                  <a href="${escapeStr(job.url)}" target="_blank" class="btn btn-outline" style="color: #10b981; border-color: rgba(16, 185, 129, 0.35);">
+                  <button class="btn btn-outline" style="color: #10b981; border-color: rgba(16, 185, 129, 0.35);" onclick="applyInBrowser('${job.id}')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                     Apply in Browser
-                  </a>
+                  </button>
                   <button class="btn btn-accent" onclick="submitApp('${job.id}')">
                     <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                     Auto-Submit (Headless)
@@ -1910,6 +1910,24 @@
         stageAllBtn.innerHTML = `Stage All Matches (&gt;70%)`;
       }
       showToast(`Staged all matching positions to your queue.`, 'success');
+    }
+
+    async function applyInBrowser(jobId) {
+      openModal('Launching assisted browser automation...', 'submit');
+      try {
+        const res = await fetch(`/api/jobs/${jobId}/apply`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ job_id: jobId, assisted: true })
+        });
+        const result = await res.json();
+        closeModal(result.message || 'Browser session active');
+        showToast(result.message || 'Browser launched. Form is being populated.', 'success');
+        await refreshAll();
+      } catch (e) {
+        showToast(`Error: ${e}`, 'error');
+        document.getElementById('processModal').style.display = 'none';
+      }
     }
 
     async function submitApp(jobId) {
