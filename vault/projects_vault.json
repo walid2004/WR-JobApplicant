@@ -1,0 +1,180 @@
+{
+  "projects": [
+    {
+      "id": "proj_cv_pdf_tool",
+      "title": "Automatisiertes Computer Vision & PDF-Parsing-Tool",
+      "title_en": "Automated Computer Vision & PDF Parsing Tool",
+      "tech_stack": "Python, OpenCV, Tesseract, Pillow, Tkinter, CI/CD",
+      "period": "10.2025 – 02.2026",
+      "period_en": "10/2025 – 02/2026",
+      "github_url": "https://github.com/walid2004/cv-pdf-parser",
+      "domain": "Computer Vision & OCR Automation",
+      "tags": ["Python", "OpenCV", "Tesseract", "OCR", "Computer Vision", "Pillow", "Tkinter", "CI/CD", "Git", "MVC"],
+      "short_description": "Automatisiertes Datenextraktionstool für über 1.000 Raffineriemaschinen mit 98,8 % Extraktionsgenauigkeit.",
+      "bullets": [
+        "Entwicklung eines automatisierten Datenextraktionstools (Python, MVC) als Ersatz für die manuelle Dateneingabe, welches komplexe PDF-Pläne für über 1.000 Raffineriemaschinen präzise ausliest.",
+        "Aufbau einer Computer-Vision-Pipeline mittels OpenCV, Pillow und Tesseract OCR zur Isolierung von Maschinenmustern und Extraktion von Beschriftungen mit einer Genauigkeit von 98,8 %.",
+        "Integration einer Tkinter GUI zur Datenübertragung mit 85 Prozent Zeitersparnis, gesteuert über Git Versionskontrolle und CI/CD Pipelines für automatisierte Updates."
+      ],
+      "bullets_en": [
+        "Engineered an automated data extraction tool (Python, MVC) to replace manual data entry, accurately parsing complex PDF maps for over 1,000 refinery machines.",
+        "Developed a computer vision pipeline utilizing OpenCV, Pillow, and Tesseract OCR to isolate machinery patterns and extract labels, achieving 98.8% extraction accuracy.",
+        "Integrated a Tkinter GUI for data transfer saving 85 percent of manual processing time, managed via Git version control and CI/CD pipelines for automated updates."
+      ]
+    },
+    {
+      "id": "proj_knn_npm",
+      "title": "Optimierter KNN Machine Learning Algorithmus",
+      "title_en": "Optimized KNN Machine Learning Algorithm",
+      "tech_stack": "TypeScript, Node.js, PapaParse, npm, Git, CI/CD",
+      "period": "08.2025 – 08.2025",
+      "period_en": "08/2025 – 08/2025",
+      "github_url": "https://github.com/walid2004/knn-spatial-npm",
+      "domain": "Machine Learning & Algorithms",
+      "tags": ["TypeScript", "Node.js", "Machine Learning", "KNN", "Algorithms", "npm", "PapaParse", "Git", "CI/CD"],
+      "short_description": "Als npm Package veröffentlichter K-Nearest-Neighbors-Algorithmus mit räumlicher Partitionierung und Grid-Bucketing.",
+      "bullets": [
+        "Entwicklung und Veröffentlichung eines K Nearest Neighbors Algorithmus als Open-Source npm Package, verwaltet durch Git und CI/CD Pipelines für absolut sichere Releases.",
+        "Architektur eines Spatial-Partitioning- und Grid-Bucketing-Systems, das die zeitliche Komplexität drastisch reduziert, indem Distanzberechnungen strikt auf benachbarte Datenzellen beschränkt werden.",
+        "Aufbau einer robusten mathematischen Datenpipeline mit benutzerdefinierter Min-Max-Normalisierungslogik und effizienter CSV-Datenverarbeitung via PapaParse."
+      ],
+      "bullets_en": [
+        "Developed and published a K Nearest Neighbors algorithm as an open source npm package, managed through Git and CI/CD pipelines for highly secure releases.",
+        "Architected a spatial partitioning and grid-bucketing system that drastically reduces time complexity by restricting distance calculations strictly to adjacent data cells.",
+        "Built a robust mathematical data pipeline featuring custom min-max normalization logic and efficient CSV data ingestion via PapaParse."
+      ]
+    },
+    {
+      "id": "proj_car_chatbot",
+      "title": "Real-Time Chatbot zur Autokauf-Empfehlung",
+      "title_en": "Car Recommendation Chatbot",
+      "tech_stack": "React, Node.js, WebSockets, MongoDB, Framer Motion",
+      "period": "04.2025 – 07.2025",
+      "period_en": "04/2025 – 07/2025",
+      "github_url": "https://github.com/walid2004/car-recommendation-chatbot",
+      "domain": "Full-Stack Web & Conversational AI",
+      "tags": ["React", "Node.js", "WebSockets", "MongoDB", "Framer Motion", "Conversational AI", "Full Stack", "JavaScript"],
+      "short_description": "Conversational AI zur Lifestyle-basierten Fahrzeugempfehlung mit verzögerungsfreiem WebSocket-Messaging.",
+      "bullets": [
+        "Entwicklung einer Full-Stack Conversational AI (React, Node.js), die Nutzern basierend auf ihren spezifischen Lifestyle-Bedürfnissen Fahrzeuge empfiehlt und so die klassische, ermüdende Filtersuche ersetzt.",
+        "Implementierung eines Echtzeit-Backends mit WebSockets für verzögerungsfreies Messaging und einer MongoDB-Datenbank für das effiziente Management komplexer Fahrzeuginventare.",
+        "Design einer interaktiven Premium-UI mittels Framer Motion, die durch flüssige Animationen ein äußerst ansprechendes Frontend-Erlebnis bietet."
+      ],
+      "bullets_en": [
+        "Developed a full-stack conversational AI (React, Node.js) to match users with vehicles based on specific lifestyle needs, eliminating traditional search fatigue.",
+        "Engineered a real-time backend utilizing WebSockets for zero-latency messaging and a MongoDB database for efficient complex car inventory management.",
+        "Designed an interactive, premium UI using Framer Motion to deliver smooth animations and a highly engaging frontend experience."
+      ]
+    },
+    {
+      "id": "proj_housing_ml",
+      "title": "End-to-End Modell zur Immobilienbewertung",
+      "title_en": "End-to-End Housing Price Prediction Model",
+      "tech_stack": "Python, scikit-learn, Pandas, NumPy, BeautifulSoup",
+      "period": "02.2026 – 03.2026",
+      "period_en": "02/2026 – 03/2026",
+      "github_url": "https://github.com/walid2004/housing-price-prediction",
+      "domain": "Data Science & Machine Learning",
+      "tags": ["Python", "scikit-learn", "Pandas", "NumPy", "BeautifulSoup", "Machine Learning", "Random Forest", "Web Scraping"],
+      "short_description": "End-to-End Machine Learning Pipeline zur Vorhersage von Immobilienpreisen mit Random Forest Regression.",
+      "bullets": [
+        "Entwicklung einer End-to-End Machine Learning-Pipeline zur Bewertung und Vorhersage lokaler Immobilienpreise auf dem Deggendorfer Immobilienmarkt.",
+        "Programmierung eines maßgeschneiderten Web-Scrapers mit BeautifulSoup zur Extraktion von Live-Immobiliendaten sowie Einsatz von Pandas und NumPy für rigoroses Data Cleaning und Feature Engineering.",
+        "Training und Optimierung eines Random Forest Regression-Modells via scikit-learn, welches rohe, unstrukturierte Webdaten erfolgreich in zuverlässige prädiktive Erkenntnisse umwandelt."
+      ],
+      "bullets_en": [
+        "Developed an end-to-end machine learning pipeline to evaluate and predict local housing prices in the Deggendorf real estate market.",
+        "Engineered a custom web scraper utilizing BeautifulSoup to extract live property data, applying Pandas and NumPy for rigorous data cleaning and feature engineering.",
+        "Trained and optimized a Random Forest Regression model via scikit-learn, successfully transforming raw, unstructured web data into reliable predictive insights."
+      ]
+    },
+    {
+      "id": "proj_auto_intern_agent",
+      "title": "Autonomer KI-Bewerbungsagent & Karriere-Orchestrator",
+      "title_en": "Autonomous AI Internship Application & Orchestration Agent",
+      "tech_stack": "Python, FastAPI, Playwright, Qwen 3 8B, SQLite, Jinja2",
+      "period": "05.2026 – 08.2026",
+      "period_en": "05/2026 – 08/2026",
+      "github_url": "https://github.com/walid2004/auto-intern-agent",
+      "domain": "Autonomous AI Agents & Browser Automation",
+      "tags": ["Python", "FastAPI", "Playwright", "Qwen 3 8B", "LLM Agents", "SQLite", "Jinja2", "Web Automation", "Ollama"],
+      "short_description": "End-to-End agentisches System zur automatischen Stellenanalyse, standortbasierten Adressanpassung und Bewerbungsübermittlung.",
+      "bullets": [
+        "Konzeption und Implementierung eines autonomen KI-Agenten zur automatisierten Stellensuche, Anforderungsanalyse und fit-basierten Projektselektion mit lokalem Qwen 3 8B.",
+        "Entwicklung einer Playwright-basierten Browser-Automatisierungs-Engine für Multi-Step Unternehmensportale (BMW, Siemens, Mercedes) mit Cookie-Session-Persistenz und Screening-Fragen-Beantwortung.",
+        "Integration einer dynamischen PDF-Kompilierungs-Pipeline für DIN 5008 Anschreiben und zweispaltige Lebensläufe mit Standort-Proximitätsanpassung in unter 1,5 Sekunden."
+      ],
+      "bullets_en": [
+        "Architected and implemented an autonomous AI agent for job requirement extraction, fit evaluation, and dynamic 4-slot project matching using local Qwen 3 8B inference.",
+        "Engineered a Playwright browser automation engine handling multi-step enterprise ATS portals (BMW, Siemens, Mercedes) with persistent session cookies and automated screening Q&A.",
+        "Integrated a sub-second vector PDF compilation pipeline rendering DIN 5008 business letters and two-column CVs with automated German city proximity adaptation."
+      ]
+    },
+    {
+      "id": "proj_email_tracker",
+      "title": "Intelligenter Bewerbungs- & E-Mail-Tracking-Agent",
+      "title_en": "Intelligent Job Application & Email Response Tracker",
+      "tech_stack": "Python, Gmail API, OAuth2, SQLite, NLP, BeautifulSoup",
+      "period": "03.2026 – 05.2026",
+      "period_en": "03/2026 – 05/2026",
+      "github_url": "https://github.com/walid2004/job-application-tracker",
+      "domain": "NLP & Email Pipeline Automation",
+      "tags": ["Python", "Gmail API", "OAuth2", "SQLite", "NLP", "BeautifulSoup", "Data Pipelines", "Email Automation"],
+      "short_description": "Automatisierter E-Mail-Parser und Status-Tracker zur Klassifikation von Rückmeldungen, Absagen und Interview-Einladungen.",
+      "bullets": [
+        "Entwicklung eines automatisierten E-Mail-Parsing-Agenten via Gmail API und OAuth2, der eingehende Unternehmensrückmeldungen in Echtzeit überwacht und strukturiert.",
+        "Implementierung einer regelbasierten NLP-Klassifikations-Engine zur präzisen Unterscheidung zwischen Bestätigungen, Einladungen zu Vorstellungsgesprächen und Absagen.",
+        "Aufbau eines synchronisierten SQLite-Dashboard-Backends mit automatischer Statusaktualisierung und lückenloser Historie für alle aktiven Bewerbungsprozesse."
+      ],
+      "bullets_en": [
+        "Engineered an automated email tracking agent via Gmail API and OAuth2 to monitor and parse enterprise recruiter responses in real time.",
+        "Implemented a rule-based NLP classification engine to accurately categorize application confirmations, interview invitations, and status updates.",
+        "Built a synchronized SQLite database backend providing real-time dashboard analytics and end-to-end pipeline visibility across all active applications."
+      ]
+    },
+    {
+      "id": "proj_krones_bottle_cv",
+      "title": "Computer-Vision-System zur Flaschenklassifizierung (Krones Challenge 2026)",
+      "title_en": "Computer Vision Bottle Defect Classification System (Krones Challenge 2026)",
+      "tech_stack": "Python, PyTorch, YOLOv8, OpenCV, ResNet, Albumentations",
+      "period": "01.2026 – 04.2026",
+      "period_en": "01/2026 – 04/2026",
+      "github_url": "https://github.com/walid2004/krones-bottle-defect-cv",
+      "domain": "Deep Learning & Industrial Computer Vision",
+      "tags": ["Python", "PyTorch", "YOLOv8", "OpenCV", "Deep Learning", "Computer Vision", "ResNet", "Image Classification", "Albumentations"],
+      "short_description": "Industrielles Deep-Learning-System zur Erkennung und Klassifizierung von Mehrwegflaschen anhand von 27 Fehlerkategorien.",
+      "bullets": [
+        "Entwicklung eines industriellen Computer-Vision-Modells im Team für die Krones Challenge 2026 zur Klassifizierung von Flaschen auf Wiederverwendbarkeit anhand von 27 spezifischen Fehlerklassen.",
+        "Implementierung von Deep-Learning-Architekturen (PyTorch, ResNet, YOLOv8) und fortgeschrittenen Datenaugmentierungs-Pipelines mit Albumentations zur Maximierung der Generalisierung.",
+        "Optimierung der Inferenzgeschwindigkeit und Fehlererkennungsrate für industrielle Qualitätskontroll-Pipelines mit präziser Defektlokalisierung."
+      ],
+      "bullets_en": [
+        "Developed a team-engineered industrial computer vision model for the Krones Challenge 2026, classifying bottle reusability across 27 distinct defect and damage categories.",
+        "Implemented deep learning architectures (PyTorch, ResNet, YOLOv8) coupled with robust Albumentations data augmentation pipelines to achieve high generalization under varying lighting.",
+        "Optimized inference runtime and defect localization accuracy for high-throughput automated industrial recycling and quality inspection pipelines."
+      ]
+    },
+    {
+      "id": "proj_ascii_cv_generator",
+      "title": "Segmentierungsbasierter Computer Vision ASCII-Art-Generator",
+      "title_en": "Segmentation-Powered Computer Vision ASCII Art Generator",
+      "tech_stack": "Python, OpenCV, NumPy, MediaPipe, PIL, CLI",
+      "period": "11.2025 – 01.2026",
+      "period_en": "11/2025 – 01/2026",
+      "github_url": "https://github.com/walid2004/ascii-art-segmentation-cv",
+      "domain": "Computer Vision & Image Processing",
+      "tags": ["Python", "OpenCV", "NumPy", "MediaPipe", "Computer Vision", "Image Segmentation", "PIL", "CLI"],
+      "short_description": "Computer-Vision-Tool zur semantischen Vordergrund-Segmentierung und Helligkeits-Mapping in hochauflösende ASCII-Grafiken.",
+      "bullets": [
+        "Entwicklung eines Computer-Vision-Tools zur Bild- und Videotransformation, das semantische Segmentierungsalgorithmen (MediaPipe, OpenCV) für präzise Vordergrund-Freistellungen nutzt.",
+        "Programmierung einer mathematischen Helligkeits- und Dichte-Mapping-Matrix mit NumPy zur verlustfreien Konvertierung von Graustufen-Pixeln in typografische ASCII-Zeichenmuster.",
+        "Erstellung eines hochperformanten CLI-Tools mit konfigurierbaren Render-Modi, Farbpaletten und Exportmöglichkeiten für Text- und Bildformate."
+      ],
+      "bullets_en": [
+        "Engineered an image-to-ASCII transformation pipeline utilizing semantic segmentation (MediaPipe, OpenCV) for precise foreground subject isolation and edge enhancement.",
+        "Built a mathematical luminosity and density-mapping matrix using NumPy to convert pixel gradient spaces into clean, balanced typographic ASCII character maps.",
+        "Designed a high-performance CLI utility featuring customizable rendering dimensions, ANSI color palettes, and multi-format text/image export capabilities."
+      ]
+    }
+  ]
+}

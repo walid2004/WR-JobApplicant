@@ -1,0 +1,45 @@
+
+search:
+  keywords:
+    - "Software Engineer Praktikum"
+    - "Software Developer Werkstudent"
+    - "Data Science Praktikum"
+    - "Machine Learning Intern"
+    - "AI Engineer Werkstudent"
+    - "Full Stack Developer Praktikum"
+  locations:
+    - "Germany"
+    - "Berlin"
+    - "Munich"
+    - "Stuttgart"
+    - "Frankfurt"
+    - "Hamburg"
+    - "Remote"
+  results_per_query: 20
+  hours_old: 72
+  platforms:
+    - "linkedin"
+    - "indeed"
+    - "glassdoor"
+    - "arbeitnow"
+
+llm:
+  model: "qwen3:8b"
+  fallback_model: "qwen2.5:3b"
+  base_url: "http://localhost:11434/v1"
+  api_key: "ollama"
+  temperature: 0.2
+  min_fit_score_auto_apply: 80
+  min_fit_score_stage_queue: 60
+
+agent:
+  mode: "assisted"
+  max_applications_per_day: 25
+  delay_between_applications_seconds: 15
+  portfolio_path: "vault/portfolio.pdf"
+  output_dir: "output"
+
+browser:
+  headless: false
+  user_data_dir: "browser_session"
+  slow_mo_ms: 100

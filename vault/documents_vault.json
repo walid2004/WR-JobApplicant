@@ -1,0 +1,52 @@
+{
+  "documents": [
+    {
+      "id": "doc_portfolio",
+      "filename": "portfolio.pdf",
+      "display_name": "Project Portfolio & Work Samples",
+      "file_path": "vault\\documents\\portfolio.pdf",
+      "size_bytes": 56675,
+      "category": "portfolio",
+      "upload_rule": "always",
+      "language": "any",
+      "description": "Technical project highlights, architecture diagrams, and GitHub repository links.",
+      "created_at": "2026-08-19"
+    },
+    {
+      "id": "doc_transcript_de",
+      "filename": "Notenuebersicht_THD_DE.pdf",
+      "display_name": "Noten\u00fcbersicht THD (Deutsch)",
+      "file_path": "vault\\documents\\Notenuebersicht_THD_DE.pdf",
+      "size_bytes": 245000,
+      "category": "transcript",
+      "upload_rule": "language_variant",
+      "language": "de",
+      "description": "Aktuelle Noten\u00fcbersicht der TH Deggendorf (B.Sc. K\u00fcnstliche Intelligenz).",
+      "created_at": "2026-08-19"
+    },
+    {
+      "id": "doc_transcript_en",
+      "filename": "Transcript_of_Records_THD_EN.pdf",
+      "display_name": "Transcript of Records THD (English)",
+      "file_path": "vault\\documents\\Transcript_of_Records_THD_EN.pdf",
+      "size_bytes": 245000,
+      "category": "transcript",
+      "upload_rule": "language_variant",
+      "language": "en",
+      "description": "Official English Transcript of Records (TH Deggendorf, B.Sc. AI).",
+      "created_at": "2026-08-19"
+    },
+    {
+      "id": "doc_immatrikulation",
+      "filename": "Immatrikulationsbescheinigung_THD.pdf",
+      "display_name": "Immatrikulationsbescheinigung THD",
+      "file_path": "vault\\documents\\Immatrikulationsbescheinigung_THD.pdf",
+      "size_bytes": 180000,
+      "category": "enrollment",
+      "upload_rule": "on_requirement",
+      "language": "de",
+      "description": "Studienbescheinigung f\u00fcr das Pflichtpraktikum / Werkstudentent\u00e4tigkeit 2026.",
+      "created_at": "2026-08-19"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+fastapi>=0.110.0
+uvicorn>=0.28.0
+playwright>=1.42.0
+openai>=1.14.0
+jinja2>=3.1.3
+python-docx>=1.1.0
+docxtpl>=0.16.8
+pydantic>=2.6.0
+pyyaml>=6.0.1
+requests>=2.31.0
+python-jobspy>=1.1.50
+beautifulsoup4>=4.12.3
+aiofiles>=23.2.1
+python-multipart>=0.0.9
+pytest>=8.0.0
+httpx>=0.27.0

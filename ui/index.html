@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal — Internship & Career Application Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root[data-theme="light"] {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-card: #ffffff;
+      --surface-hover: #f1f5f9;
+      --border: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --primary-btn: #0f172a;
+      --primary-btn-text: #ffffff;
+      --primary-btn-hover: #1e293b;
+      --accent-btn: #2563eb;
+      --accent-btn-hover: #1d4ed8;
+      --accent-btn-text: #ffffff;
+      --tag-bg: #f1f5f9;
+      --tag-text: #334155;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+      --success-text: #065f46;
+      --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+      --modal-overlay: rgba(15, 23, 42, 0.65);
+      --modal-bg: #ffffff;
+      --input-bg: #ffffff;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #090d16;
+      --surface: #0f1422;
+      --surface-card: #131929;
+      --surface-hover: #172033;
+      --border: #1e293b;
+      --border-subtle: #172033;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary-btn: #f8fafc;
+      --primary-btn-text: #090d16;
+      --primary-btn-hover: #e2e8f0;
+      --accent-btn: #2563eb;
+      --accent-btn-hover: #1d4ed8;
+      --accent-btn-text: #ffffff;
+      --tag-bg: #1e293b;
+      --tag-text: #cbd5e1;
+      --success-bg: rgba(16, 185, 129, 0.12);
+      --success-border: rgba(16, 185, 129, 0.28);
+      --success-text: #34d399;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      --modal-overlay: rgba(0, 0, 0, 0.8);
+      --modal-bg: #0f1422;
+      --input-bg: #090d16;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    
+    .navbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--primary-btn);
+      color: var(--primary-btn-text);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    
+    .icon {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    
+    .theme-toggle-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--surface-hover);
+    }
+
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 60px 20px;
+      flex: 1;
+      width: 100%;
+    }
+
+    
+    .command-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .command-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .command-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .candidate-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--text-dim);
+    }
+
+    .url-input-bar {
+      display: flex;
+      gap: 10px;
+    }
+
+    .url-input {
+      flex: 1;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 13px;
+      color: var(--text-main);
+      font-size: 13px;
+      font-family: 'IBM Plex Mono', monospace;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .url-input:focus {
+      border-color: var(--accent-btn);
+    }
+
+    .url-input::placeholder {
+      color: var(--text-dim);
+      font-family: 'Inter', sans-serif;
+    }
+
+    
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary-btn);
+      color: var(--primary-btn-text);
+      border-color: var(--primary-btn);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-btn-hover);
+      border-color: var(--primary-btn-hover);
+    }
+
+    .btn-accent {
+      background: var(--accent-btn);
+      color: var(--accent-btn-text);
+      border-color: var(--accent-btn);
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      background: var(--accent-btn-hover);
+      border-color: var(--accent-btn-hover);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background: var(--surface-hover);
+    }
+
+    
+    .btn-spinner {
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    
+    .job-card-fall-away {
+      transform: translateY(24px) scale(0.96) !important;
+      opacity: 0 !important;
+      max-height: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      margin-bottom: 0 !important;
+      border-width: 0 !important;
+      overflow: hidden !important;
+      pointer-events: none !important;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .metric-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+
+    .metric-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    
+    .tabs-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .tab-button {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .tab-button:hover {
+      color: var(--text-main);
+    }
+
+    .tab-button.active {
+      color: var(--text-main);
+      border-bottom-color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .tab-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      background: var(--tag-bg);
+      color: var(--text-muted);
+      padding: 1px 6px;
+      border-radius: 10px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    
+    .job-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--card-shadow);
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .job-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .job-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+
+    .job-company-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tag-company {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .tag-mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .fit-score-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--success-text);
+    }
+
+    .eval-rationale {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-left: 2px solid var(--text-dim);
+      padding: 7px 11px;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 14px;
+    }
+
+    .section-title-sm {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .projects-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .proj-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 12px;
+    }
+
+    .proj-box-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .proj-box-domain {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--text-dim);
+    }
+
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .letter-editor-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 14px;
+    }
+
+    .letter-editor-textarea {
+      width: 100%;
+      height: 130px;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 12.5px;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .job-footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .doc-links-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 12px;
+    }
+
+    .generic-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    
+    .table-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    .standard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .standard-table th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .standard-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .standard-table tr:hover td {
+      background: var(--surface-hover);
+    }
+
+    
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--modal-overlay);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .modal-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      max-height: 90vh;
+      width: 100%;
+    }
+
+    .modal-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    .modal-title-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .modal-subtitle-text {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .terminal-output {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      line-height: 1.6;
+      max-height: 200px;
+      overflow-y: auto;
+      color: var(--text-muted);
+    }
+
+    .terminal-line {
+      margin-bottom: 3px;
+    }
+
+    .terminal-line.highlight {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .terminal-line.success {
+      color: #10b981;
+    }
+
+    .pdf-iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: #525659;
+    }
+
+    .login-input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-main);
+      font-size: 12.5px;
+      outline: none;
+    }
+
+    .login-input:focus {
+      border-color: var(--accent-btn);
+    }
+  </style>
+</head>
+<body>
+
+  
+  <div id="processModal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 520px;">
+      <div class="modal-header">
+        <span class="modal-title-text" id="processModalHeader">Processing Pipeline</span>
+        <button class="btn btn-outline" onclick="closeModalForce()" style="padding: 2px 8px; font-size: 11px;">
+          Close
+        </button>
+      </div>
+      <div style="padding: 20px;">
+        <div class="terminal-output" id="terminalLogs"></div>
+        <div style="margin-top: 14px; display: flex; justify-content: flex-end;">
+          <button class="btn btn-outline" onclick="closeModalForce()" style="font-size: 12px; padding: 5px 12px;">
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="pdfPreviewModal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 960px; height: 90vh;">
+      <div class="modal-header">
+        <div class="modal-title-text" id="pdfPreviewTitle">Document Preview</div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <a id="pdfOpenNewTab" href="#" target="_blank" class="btn btn-outline" style="padding: 4px 10px; font-size: 11.5px;">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            Open in New Window
+          </a>
+          <button class="btn btn-outline" onclick="closePdfModal()" style="padding: 4px 10px; font-size: 11.5px;">
+            Close
+          </button>
+        </div>
+      </div>
+      <iframe class="pdf-iframe" id="pdfViewerFrame" src="about:blank"></iframe>
+    </div>
+  </div>
+
+  
+  <div id="screenshotModal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 960px;">
+      <div class="modal-header">
+        <div class="modal-title-text" id="screenshotModalTitle">Application Submission Proof</div>
+        <button class="btn btn-outline" onclick="closeScreenshotModal()" style="padding: 3px 8px; font-size: 11px;">
+          Close
+        </button>
+      </div>
+      <div style="padding: 16px; overflow-y: auto; text-align: center; background: #000;">
+        <img id="proofScreenshotImg" src="" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="discoverModal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 980px; max-height: 88vh;">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title-text">Live German Internship Radar</div>
+          <div class="modal-subtitle-text">Matching positions across Personio ATS, Arbeitnow, BMW, Siemens, Bosch with dynamic profile scores</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button id="stageAllDiscBtn" class="btn btn-primary" onclick="stageAllDiscovered()" style="font-size: 12px; padding: 6px 14px;">
+            Stage All Matches (&gt;70%)
+          </button>
+          <button class="btn btn-outline" onclick="closeDiscoverModal()" style="font-size: 12px; padding: 6px 12px;">
+            Close
+          </button>
+        </div>
+      </div>
+      <div style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;" id="discoverListContainer">
+        
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="docUploadModal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 540px;">
+      <div class="modal-header">
+        <div class="modal-title-text">Add Document to Applicant Profile</div>
+        <button class="btn btn-outline" onclick="document.getElementById('docUploadModal').style.display='none'" style="padding: 3px 8px; font-size: 11px;">
+          Close
+        </button>
+      </div>
+      <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Document File (PDF / Image)</label>
+          <input type="file" id="newDocFile" class="login-input" accept=".pdf,.doc,.docx,.png,.jpg" style="padding: 6px;">
+        </div>
+        <div>
+          <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Display Name</label>
+          <input type="text" id="newDocTitle" class="login-input" placeholder="e.g. Official Transcript of Records (THD)">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Document Category</label>
+            <select id="newDocCategory" class="login-input">
+              <option value="transcript">Transcript / Notenübersicht</option>
+              <option value="enrollment">Enrollment / Immatrikulationsbescheinigung</option>
+              <option value="portfolio">Portfolio / Work Samples</option>
+              <option value="recommendation">Letter of Recommendation / Zeugnis</option>
+              <option value="work_permit">Work Permit / Visa</option>
+              <option value="certificate">Course / Technical Certificate</option>
+              <option value="other">Other Attachment</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Upload Rule</label>
+            <select id="newDocRule" class="login-input">
+              <option value="always">Always Upload (Additional Files)</option>
+              <option value="on_requirement">Upload When Required (ATS Prompt)</option>
+              <option value="language_variant">Language Variant (DE vs EN Selection)</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Document Language</label>
+          <select id="newDocLang" class="login-input">
+            <option value="any">Any / Universal (Bilingual)</option>
+            <option value="de">German (DE) — Picked for German postings</option>
+            <option value="en">English (EN) — Picked for English postings</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Description / Notes (Optional)</label>
+          <input type="text" id="newDocDesc" class="login-input" placeholder="e.g. Valid enrollment for winter semester 2026">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+          <button class="btn btn-outline" onclick="document.getElementById('docUploadModal').style.display='none'">Cancel</button>
+          <button class="btn btn-primary" onclick="submitUploadDocument()">Upload & Register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <nav class="navbar">
+    <div class="nav-left">
+      <div class="brand-mark">P</div>
+      <div>
+        <div class="brand-title">Portal</div>
+      </div>
+      <span class="brand-subtitle">Career Application Engine</span>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn-accent" onclick="runDiscovery()" style="font-size: 12.5px; font-weight: 600; padding: 6px 14px;">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        Discover Jobs
+      </button>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle color theme">
+        <svg class="icon" id="themeIconSvg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <span id="themeLabel">Dark Mode</span>
+      </button>
+    </div>
+  </nav>
+
+  
+  <div class="container">
+
+    
+    <div class="command-panel">
+      <div class="command-header">
+        <div class="command-title">Job Application Pipeline</div>
+        <div class="candidate-meta">Waled Mahaya &bull; B.Sc. Artificial Intelligence (THD) &bull; Pflichtpraktikum 2026</div>
+      </div>
+      <div class="url-input-bar">
+        <input type="text" id="urlField" class="url-input" placeholder="Paste job URL from BMW, Siemens, Mercedes-Benz, LinkedIn, or Personio...">
+        <button class="btn btn-primary" onclick="handleAnalyzeUrl()">
+          <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Analyze & Stage
+        </button>
+      </div>
+    </div>
+
+    
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <div class="metric-label">Discovered</div>
+        <div class="metric-value" id="valDiscovered">0</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">Staged in Queue</div>
+        <div class="metric-value" id="valStaged">0</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">Submitted</div>
+        <div class="metric-value" id="valApplied">0</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">Avg Match Score</div>
+        <div class="metric-value" id="valAvgScore">0%</div>
+      </div>
+    </div>
+
+    
+    <div class="tabs-bar">
+      <button class="tab-button active" onclick="switchView('queue')">
+        Staged Applications <span class="tab-badge" id="badgeStaged">0</span>
+      </button>
+      <button class="tab-button" onclick="switchView('vault')">
+        Applicant Profile
+      </button>
+      <button class="tab-button" onclick="switchView('portals')">
+        Session & Portals
+      </button>
+      <button class="tab-button" onclick="switchView('history')">
+        Submission History
+      </button>
+    </div>
+
+    
+    <div id="tab-queue" class="tab-content active">
+      <div id="queueList">
+        <p style="text-align: center; color: var(--text-dim); padding: 40px; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">
+          No staged applications. Paste a job URL above or click 'Discover Jobs'.
+        </p>
+      </div>
+    </div>
+
+    
+    <div id="tab-vault" class="tab-content">
+      <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 16px;">
+        
+        <div class="generic-card">
+          <div>
+            <div class="section-title-sm">Candidate Information</div>
+            <div id="profileSummaryView" style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Loading...</div>
+          </div>
+        </div>
+
+        
+        <div class="generic-card">
+          <div>
+            <div class="section-title-sm">Verified Projects Library (8 Projects)</div>
+            <div id="projectsVaultView" style="display: flex; flex-direction: column; gap: 10px;">Loading...</div>
+          </div>
+        </div>
+
+        
+        <div class="generic-card" style="grid-column: 1 / -1;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <div class="section-title-sm">Master Documents Vault</div>
+                <div style="font-size: 12px; color: var(--text-dim);">Static certificates, transcripts, enrollment proofs, and work samples. Upload once; the system selects and attaches them automatically based on ATS requirements and job language (DE vs EN).</div>
+              </div>
+              <button class="btn btn-primary" onclick="document.getElementById('docUploadModal').style.display='flex'" style="font-size: 11.5px; padding: 5px 12px;">
+                + Add Document
+              </button>
+            </div>
+
+            
+            <div id="documentsVaultList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 12px;">
+              
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="generic-card" style="grid-column: 1 / -1;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <div class="section-title-sm">Target Keywords & Search Matrix</div>
+                <div style="font-size: 12px; color: var(--text-dim);">The scraper uses this catalog to match German internships across Personio, Arbeitnow, BMW, Siemens, Bosch and LinkedIn.</div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline" onclick="autoGenerateKeywords()" style="font-size: 11.5px; padding: 5px 10px;">Auto-Generate from Profile</button>
+                <button class="btn btn-primary" onclick="saveKeywordsToServer()" style="font-size: 11.5px; padding: 5px 12px;">Save Keywords</button>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+              
+              <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Target Roles & Levels</div>
+                <div id="rolesTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
+                <div style="display: flex; gap: 6px;">
+                  <input type="text" id="newRoleInput" class="login-input" placeholder="e.g. Praktikant, KI..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('roles', 'newRoleInput')">
+                  <button class="btn btn-outline" onclick="addKeyword('roles', 'newRoleInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
+                </div>
+              </div>
+
+              
+              <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Technical Domains & Skills</div>
+                <div id="domainsTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
+                <div style="display: flex; gap: 6px;">
+                  <input type="text" id="newDomainInput" class="login-input" placeholder="e.g. Computer Vision..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('domains_and_tech', 'newDomainInput')">
+                  <button class="btn btn-outline" onclick="addKeyword('domains_and_tech', 'newDomainInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
+                </div>
+              </div>
+
+              
+              <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Locations & Work Modes</div>
+                <div id="locationsTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
+                <div style="display: flex; gap: 6px;">
+                  <input type="text" id="newLocationInput" class="login-input" placeholder="e.g. München, Remote..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('locations', 'newLocationInput')">
+                  <button class="btn btn-outline" onclick="addKeyword('locations', 'newLocationInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div id="tab-portals" class="tab-content">
+      
+      <div class="generic-card" style="margin-bottom: 20px; border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.03);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div style="font-weight: 600; font-size: 14.5px; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+            Active Session & Cookie Authenticator
+          </div>
+          <span class="tag-mono" id="cookieStatusTag" style="color: #3b82f6; border-color: rgba(59, 130, 246, 0.3);">Checking Session...</span>
+        </div>
+        <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">
+          Paste your <strong>LinkedIn session token (<code>li_at</code>)</strong>, Indeed cookie string, or Cookie JSON below. The bot will automatically inject your authenticated session into Playwright for autonomous submissions.
+        </p>
+        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+          <select id="cookiePortalSelect" class="url-input" style="width: 170px; padding: 7px 10px; font-size: 12px;">
+            <option value="linkedin">LinkedIn</option>
+            <option value="indeed">Indeed</option>
+            <option value="google">Google / General</option>
+          </select>
+          <input type="text" id="cookieDataField" class="url-input" placeholder="Paste li_at token, raw cookie header, or JSON..." style="flex: 1; font-size: 12px;">
+          <button class="btn btn-primary" onclick="handleImportCookies()" style="padding: 7px 18px; font-size: 12px; font-weight: 600;">
+            Save & Authenticate
+          </button>
+        </div>
+        <div style="font-size: 11px; color: var(--text-dim);">
+          Tip: How to get LinkedIn token in 10 seconds: In Chrome, visit LinkedIn &rarr; Press <code>F12</code> &rarr; <strong>Application</strong> &rarr; <strong>Cookies</strong> &rarr; <code>https://www.linkedin.com</code> &rarr; Click <code>li_at</code>, copy its value and paste it above.
+        </div>
+      </div>
+
+      <div class="cards-grid" id="portalsList">
+        
+      </div>
+    </div>
+
+    
+    <div id="tab-history" class="tab-content">
+      <div class="table-box">
+        <table class="standard-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Location</th>
+              <th>Portal</th>
+              <th>Fit</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Documents & Actions</th>
+            </tr>
+          </thead>
+          <tbody id="historyTable">
+            <tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 24px;">No submitted applications recorded yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let appJobs = [];
+    let vaultStore = {};
+    let discoveredJobsCache = [];
+    let activeKeywords = { roles: [], domains_and_tech: [], locations: [] };
+
+    function initTheme() {
+      const saved = localStorage.getItem('portal_theme') || 'light';
+      setTheme(saved);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = (current === 'light') ? 'dark' : 'light';
+      setTheme(next);
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('portal_theme', theme);
+      const icon = document.getElementById('themeIconSvg');
+      const label = document.getElementById('themeLabel');
+      if (theme === 'light') {
+        icon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+        label.innerText = 'Dark Mode';
+      } else {
+        icon.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
+        label.innerText = 'Light Mode';
+      }
+    }
+
+    function openPdfPreview(title, pdfFilename) {
+      const modal = document.getElementById('pdfPreviewModal');
+      const frame = document.getElementById('pdfViewerFrame');
+      const titleEl = document.getElementById('pdfPreviewTitle');
+      const openBtn = document.getElementById('pdfOpenNewTab');
+
+      const url = `/api/download/${pdfFilename}?t=${Date.now()}`;
+      titleEl.innerText = title;
+      frame.src = `${url}#toolbar=0&navpanes=0&view=FitH`;
+      openBtn.href = url;
+      modal.style.display = 'flex';
+    }
+
+    function closePdfModal() {
+      const modal = document.getElementById('pdfPreviewModal');
+      const frame = document.getElementById('pdfViewerFrame');
+      frame.src = 'about:blank';
+      modal.style.display = 'none';
+    }
+
+    function closeModalForce() {
+      document.getElementById('processModal').style.display = 'none';
+      if (tInterval) clearInterval(tInterval);
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        document.getElementById('valDiscovered').innerText = data.total_discovered || 0;
+        document.getElementById('valStaged').innerText = data.staged || 0;
+        document.getElementById('valApplied').innerText = data.applied || 0;
+        document.getElementById('valAvgScore').innerText = `${data.avg_fit_score || 0}%`;
+        document.getElementById('badgeStaged').innerText = data.staged || 0;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadJobs() {
+      try {
+        const res = await fetch('/api/jobs');
+        appJobs = await res.json();
+        const container = document.getElementById('queueList');
+
+        if (!appJobs || appJobs.length === 0) {
+          container.innerHTML = `<p style="text-align: center; color: var(--text-dim); padding: 40px; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">No staged applications. Paste a job URL above or click 'Discover Jobs'.</p>`;
+          return;
+        }
+
+        container.innerHTML = appJobs.map(job => {
+          const pids = job.selected_project_ids || [];
+          const skills = job.tailored_skills || [];
+          const cvFile = job.cv_pdf_path ? job.cv_pdf_path.split('\\').pop().split('/').pop() : '';
+          const letterFile = job.anschreiben_pdf_path ? job.anschreiben_pdf_path.split('\\').pop().split('/').pop() : '';
+
+          return `
+            <div class="job-card">
+              <div class="job-header-row">
+                <div>
+                  <div class="job-title">${escapeStr(job.title)}</div>
+                  <div class="job-company-meta">
+                    <span class="tag-company">${escapeStr(job.company)}</span> &bull; 
+                    <span class="tag-mono">${escapeStr(job.location || 'Germany')}</span> &bull; 
+                    <span class="tag-mono">${escapeStr(job.portal)}</span>
+                  </div>
+                </div>
+                <div class="fit-score-badge">
+                  ${job.fit_score || 0}% Fit
+                </div>
+              </div>
+
+              <div class="eval-rationale">
+                <strong>Evaluation:</strong> ${escapeStr(job.fit_rationale || '')}
+              </div>
+
+              <div class="section-title-sm">Selected Projects (${pids.length})</div>
+              <div class="projects-summary-grid">
+                ${pids.map(pid => {
+                  const p = (vaultStore.projects || []).find(x => x.id === pid) || { title: pid, domain: 'Project' };
+                  return `
+                    <div class="proj-box">
+                      <div class="proj-box-title">${escapeStr(p.title)}</div>
+                      <div class="proj-box-domain">${escapeStr(p.tech_stack || p.domain)}</div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+              <div class="section-title-sm">Tailored Stack</div>
+              <div class="skills-row">
+                ${skills.map(s => `<span class="tag-mono">${escapeStr(s)}</span>`).join('')}
+              </div>
+
+              <div class="section-title-sm">Cover Letter Draft (DIN 5008)</div>
+              <div class="letter-editor-box">
+                <textarea class="letter-editor-textarea" id="txt_${job.id}" onchange="updateCoverLetter('${job.id}')">${escapeStr(job.anschreiben_text || '')}</textarea>
+              </div>
+
+              <div class="job-footer-bar">
+                <div class="doc-links-group">
+                  ${cvFile ? `
+                    <button class="btn btn-outline" onclick="openPdfPreview('CV — ${escapeStr(job.company)}', '${cvFile}')">
+                      <svg class="icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                      Preview CV
+                    </button>
+                  ` : ''}
+                  ${letterFile ? `
+                    <button class="btn btn-outline" onclick="openPdfPreview('Anschreiben — ${escapeStr(job.company)}', '${letterFile}')">
+                      <svg class="icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                      Preview Letter
+                    </button>
+                  ` : ''}
+                  <a href="${escapeStr(job.url)}" target="_blank" class="btn btn-outline" style="color: var(--text-dim);">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    Job Link
+                  </a>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                  <button class="btn btn-outline" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.25);" onclick="deleteJob('${job.id}')" title="Delete application card">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Delete
+                  </button>
+                  <a href="${escapeStr(job.url)}" target="_blank" class="btn btn-outline" style="color: #10b981; border-color: rgba(16, 185, 129, 0.35);">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Apply in Browser
+                  </a>
+                  <button class="btn btn-accent" onclick="submitApp('${job.id}')">
+                    <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    Auto-Submit (Headless)
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadPortals() {
+      try {
+        const res = await fetch('/api/portals');
+        const portals = await res.json();
+        const container = document.getElementById('portalsList');
+        
+        container.innerHTML = portals.map(p => `
+          <div class="generic-card">
+            <div>
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${escapeStr(p.display_name)}</div>
+              <div class="tag-mono" style="margin-bottom: 8px;">${escapeStr(p.portal_name)}</div>
+              <div style="font-size: 12px; color: var(--text-dim); margin-bottom: 8px;">
+                Status: <strong>${p.status}</strong>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <button class="btn btn-outline" onclick="openSession('${escapeStr(p.login_url)}', '${escapeStr(p.display_name)}')">
+                Open Login Page
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadVault() {
+      try {
+        const res = await fetch('/api/vault');
+        vaultStore = await res.json();
+        
+        const prof = vaultStore.profile || {};
+        document.getElementById('profileSummaryView').innerHTML = `
+          <strong>Candidate:</strong> ${prof.personal?.full_name}<br>
+          <strong>Address:</strong> ${prof.personal?.default_street}, ${prof.personal?.default_postal_code} ${prof.personal?.default_city}<br>
+          <strong>Email / Tel:</strong> ${prof.personal?.email} &bull; ${prof.personal?.phone}<br>
+          <strong>Education:</strong> ${prof.status?.degree} at ${prof.status?.university}<br>
+          <strong>Languages:</strong> ${prof.languages?.map(l => l.language + ' (' + l.level + ')').join(', ')}<br>
+          <strong>Target:</strong> ${prof.status?.target_internship}
+        `;
+
+        const projs = vaultStore.projects || [];
+        document.getElementById('projectsVaultView').innerHTML = projs.map(p => `
+          <div class="proj-box" style="padding: 10px 12px;">
+            <div class="proj-box-title" style="font-size: 12.5px;">${escapeStr(p.title)}</div>
+            <div class="proj-box-domain" style="margin-bottom: 3px;">${escapeStr(p.tech_stack || p.domain)}</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">${escapeStr(p.short_description)}</div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadDocumentsVault() {
+      try {
+        const res = await fetch('/api/vault/documents');
+        const data = await res.json();
+        const docs = data.documents || [];
+        const container = document.getElementById('documentsVaultList');
+        if (!container) return;
+        
+        if (docs.length === 0) {
+          container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 20px; font-size: 12px;">No static documents registered. Click '+ Add Document' to upload transcripts or certificates.</p>`;
+          return;
+        }
+        
+        container.innerHTML = docs.map(d => {
+          let ruleBadge = '';
+          if (d.upload_rule === 'always') {
+            ruleBadge = '<span class="tag-mono" style="color:#10b981; border-color:rgba(16,185,129,0.3);">Always Upload</span>';
+          } else if (d.upload_rule === 'language_variant') {
+            ruleBadge = `<span class="tag-mono" style="color:#8b5cf6; border-color:rgba(139,92,246,0.3);">Variant: ${d.language?.toUpperCase() || 'ANY'}</span>`;
+          } else {
+            ruleBadge = '<span class="tag-mono" style="color:#3b82f6; border-color:rgba(59,130,246,0.3);">When Required</span>';
+          }
+          
+          const sizeKb = (d.size_bytes / 1024).toFixed(0);
+          
+          return `
+            <div class="proj-box" style="padding: 12px 14px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; gap: 8px;">
+                  <div style="font-weight: 600; font-size: 13px; color: var(--text-main);">${escapeStr(d.display_name)}</div>
+                  ${ruleBadge}
+                </div>
+                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 4px; font-family:'IBM Plex Mono',monospace;">
+                  ${escapeStr(d.filename)} (${sizeKb} KB) &bull; ${escapeStr(d.category)}
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-muted); line-height: 1.4; margin-bottom: 10px;">
+                  ${escapeStr(d.description || 'No notes provided.')}
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid var(--border);">
+                <button class="btn btn-outline" onclick="previewVaultDocument('${d.id}', '${escapeStr(d.display_name)}')" style="padding: 3px 8px; font-size: 11px;">
+                  Preview
+                </button>
+                <button class="btn btn-outline" onclick="deleteVaultDocument('${d.id}')" style="padding: 3px 8px; font-size: 11px; color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
+                  Delete
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error('Failed to load documents vault:', e);
+      }
+    }
+
+    async function submitUploadDocument() {
+      const fileInput = document.getElementById('newDocFile');
+      const titleInput = document.getElementById('newDocTitle');
+      const catInput = document.getElementById('newDocCategory');
+      const ruleInput = document.getElementById('newDocRule');
+      const langInput = document.getElementById('newDocLang');
+      const descInput = document.getElementById('newDocDesc');
+      
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please select a file to upload.');
+        return;
+      }
+      const file = fileInput.files[0];
+      const title = titleInput.value.trim() || file.name;
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('display_name', title);
+      formData.append('category', catInput.value);
+      formData.append('upload_rule', ruleInput.value);
+      formData.append('language', langInput.value);
+      formData.append('description', descInput.value.trim());
+      
+      try {
+        const res = await fetch('/api/vault/documents/upload', {
+          method: 'POST',
+          body: formData
+        });
+        if (res.ok) {
+          document.getElementById('docUploadModal').style.display = 'none';
+          fileInput.value = '';
+          titleInput.value = '';
+          descInput.value = '';
+          showToast('Document uploaded and registered in Master Vault.', 'success');
+          await loadDocumentsVault();
+        } else {
+          const err = await res.json();
+          alert('Upload failed: ' + (err.detail || 'Error'));
+        }
+      } catch (e) {
+        alert('Error uploading document: ' + e);
+      }
+    }
+
+    async function deleteVaultDocument(docId) {
+      if (!confirm('Are you sure you want to remove this document from the Master Vault?')) return;
+      try {
+        const res = await fetch(`/api/vault/documents/${docId}`, { method: 'DELETE' });
+        if (res.ok) {
+          showToast('Document removed from Master Vault.', 'info');
+          await loadDocumentsVault();
+        } else {
+          alert('Failed to delete document.');
+        }
+      } catch (e) {
+        alert('Error: ' + e);
+      }
+    }
+
+    function previewVaultDocument(docId, title) {
+      const modal = document.getElementById('pdfPreviewModal');
+      const frame = document.getElementById('pdfViewerFrame');
+      const titleEl = document.getElementById('pdfPreviewTitle');
+      const openBtn = document.getElementById('pdfOpenNewTab');
+      
+      const docUrl = `/api/vault/documents/${docId}/download?t=${Date.now()}`;
+      titleEl.innerText = title;
+      frame.src = `${docUrl}#toolbar=0&navpanes=0&view=FitH`;
+      openBtn.href = docUrl;
+      modal.style.display = 'flex';
+    }
+
+    async function loadHistory() {
+      try {
+        const res = await fetch('/api/applications');
+        const apps = await res.json();
+        const tbody = document.getElementById('historyTable');
+        if (!apps || apps.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 24px;">No submitted applications recorded yet.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = apps.map(a => {
+          const cvF = a.cv_path ? a.cv_path.split('\\').pop().split('/').pop() : '';
+          const letterF = a.anschreiben_path ? a.anschreiben_path.split('\\').pop().split('/').pop() : '';
+          const imgF = a.screenshot_path ? a.screenshot_path.split('\\').pop().split('/').pop() : '';
+          return `
+            <tr>
+              <td><strong>${escapeStr(a.company)}</strong></td>
+              <td>${escapeStr(a.job_title)}</td>
+              <td>${escapeStr(a.location || 'Germany')}</td>
+              <td><span class="tag-mono">${escapeStr(a.portal)}</span></td>
+              <td><strong>${a.fit_score}%</strong></td>
+              <td style="font-family: 'IBM Plex Mono', monospace; font-size: 11px;">${a.applied_at ? a.applied_at.substring(0, 16).replace('T', ' ') : ''}</td>
+              <td><span class="fit-score-badge" style="font-size: 11px; padding: 2px 6px;">${escapeStr(a.status)}</span></td>
+              <td>
+                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                  ${cvF ? `<button class="btn btn-outline" style="padding: 2px 6px; font-size: 11px;" onclick="openPdfPreview('CV — ${escapeStr(a.company)}', '${cvF}')">CV</button>` : ''}
+                  ${letterF ? `<button class="btn btn-outline" style="padding: 2px 6px; font-size: 11px;" onclick="openPdfPreview('Letter — ${escapeStr(a.company)}', '${letterF}')">Letter</button>` : ''}
+                  ${imgF ? `<button class="btn btn-outline" style="padding: 2px 6px; font-size: 11px; color: #3b82f6; border-color: rgba(59, 130, 246, 0.3);" onclick="openProofScreenshot('Proof — ${escapeStr(a.company)}', '${imgF}')">Proof</button>` : ''}
+                  <button class="btn btn-outline" style="padding: 2px 6px; font-size: 11px; color: #ef4444; border-color: rgba(239, 68, 68, 0.3);" onclick="deleteHistoryItem(${a.id})">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function deleteHistoryItem(appId) {
+      if (!confirm('Are you sure you want to remove this submission record from history?')) return;
+      try {
+        const res = await fetch(`/api/history/${appId}`, { method: 'DELETE' });
+        if (res.ok) {
+          showToast('Record deleted from submission history.', 'info');
+          await loadStats();
+          await loadHistory();
+        } else {
+          alert('Failed to delete history record.');
+        }
+      } catch (e) {
+        alert('Error: ' + e);
+      }
+    }
+
+    function openProofScreenshot(title, filename) {
+      document.getElementById('screenshotModalTitle').innerText = title;
+      document.getElementById('proofScreenshotImg').src = `/api/screenshots/${filename}?t=${Date.now()}`;
+      document.getElementById('screenshotModal').style.display = 'flex';
+    }
+
+    function closeScreenshotModal() {
+      document.getElementById('screenshotModal').style.display = 'none';
+    }
+
+    async function loadKeywords() {
+      try {
+        const res = await fetch('/api/vault/keywords');
+        activeKeywords = await res.json();
+        renderKeywords();
+      } catch (e) {
+        console.error('Failed to load keywords:', e);
+      }
+    }
+
+    function renderKeywords() {
+      const renderTags = (containerId, key) => {
+        const c = document.getElementById(containerId);
+        if (!c) return;
+        const list = activeKeywords[key] || [];
+        c.innerHTML = list.map((kw, i) => `
+          <span style="background: var(--surface); border: 1px solid var(--border); padding: 3px 8px; border-radius: 4px; font-size: 11.5px; display: inline-flex; align-items: center; gap: 5px; color: var(--text-main);">
+            ${escapeStr(kw)}
+            <span style="cursor: pointer; opacity: 0.6; font-size: 10px; font-weight: bold;" onclick="removeKeyword('${key}', ${i})">&times;</span>
+          </span>
+        `).join('');
+      };
+      renderTags('rolesTagsContainer', 'roles');
+      renderTags('domainsTagsContainer', 'domains_and_tech');
+      renderTags('locationsTagsContainer', 'locations');
+    }
+
+    function addKeyword(key, inputId) {
+      const input = document.getElementById(inputId);
+      const val = input.value.trim();
+      if (!val) return;
+      if (!activeKeywords[key]) activeKeywords[key] = [];
+      if (!activeKeywords[key].includes(val)) {
+        activeKeywords[key].push(val);
+        renderKeywords();
+      }
+      input.value = '';
+    }
+
+    function removeKeyword(key, index) {
+      if (activeKeywords[key]) {
+        activeKeywords[key].splice(index, 1);
+        renderKeywords();
+      }
+    }
+
+    async function saveKeywordsToServer() {
+      try {
+        const res = await fetch('/api/vault/keywords', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ keywords: activeKeywords })
+        });
+        if (res.ok) {
+          showToast('Search keywords catalog saved successfully.', 'success');
+        } else {
+          alert('Failed to save keywords.');
+        }
+      } catch (e) {
+        alert('Error saving keywords: ' + e);
+      }
+    }
+
+    async function autoGenerateKeywords() {
+      try {
+        openModal('Analyzing master profile & 8 vault projects to expand keyword matrix...');
+        const res = await fetch('/api/vault/keywords/generate', { method: 'POST' });
+        const data = await res.json();
+        closeModal('Keywords generated');
+        if (data.keywords) {
+          activeKeywords = data.keywords;
+          renderKeywords();
+          showToast('Auto-generated search keywords matrix.', 'success');
+        }
+      } catch (e) {
+        alert('Error: ' + e);
+        document.getElementById('processModal').style.display = 'none';
+      }
+    }
+
+    let tInterval = null;
+    let tStart = 0;
+
+    function openModal(initialMsg = 'Processing job posting...', mode = 'analyze') {
+      const modal = document.getElementById('processModal');
+      const logs = document.getElementById('terminalLogs');
+      document.getElementById('processModalHeader').innerText = mode === 'submit' ? 'Autonomous Application Engine' : 'Processing Pipeline';
+      logs.innerHTML = '';
+      modal.style.display = 'flex';
+      tStart = Date.now();
+      
+      function appendLog(msg, type = 'normal') {
+        const sec = ((Date.now() - tStart) / 1000).toFixed(1);
+        const div = document.createElement('div');
+        div.className = `terminal-line ${type}`;
+        div.innerText = `[${sec}s] ${msg}`;
+        logs.appendChild(div);
+        logs.scrollTop = logs.scrollHeight;
+      }
+
+      appendLog(initialMsg, 'highlight');
+      
+      let step = 0;
+      clearInterval(tInterval);
+      tInterval = setInterval(() => {
+        step++;
+        if (mode === 'submit') {
+          if (step === 1) appendLog('Launching autonomous browser engine & navigating...');
+          else if (step === 3) appendLog('Bypassing overlays & loading application form...');
+          else if (step === 6) appendLog('Autofilling candidate info & uploading tailored CV + Anschreiben...');
+          else if (step === 10) appendLog('Answering screening questions with Qwen 3 8B...');
+          else if (step % 5 === 0) appendLog('Submitting application & capturing proof screenshot...');
+        } else {
+          if (step === 1) appendLog('Ingesting job details & extracting requirements...');
+          else if (step === 3) appendLog('Evaluating candidate fit with Qwen 3 8B...');
+          else if (step === 6) appendLog('Matching projects from master vault & drafting cover letter...');
+          else if (step === 10) appendLog('Compiling vector PDF documents...');
+          else if (step % 5 === 0) appendLog('Finalizing document generation...');
+        }
+      }, 1800);
+    }
+
+    function closeModal(finalMsg = 'Done') {
+      clearInterval(tInterval);
+      const modal = document.getElementById('processModal');
+      modal.style.display = 'none';
+    }
+
+    async function handleAnalyzeUrl() {
+      const input = document.getElementById('urlField');
+      const url = input.value.trim();
+      if (!url) {
+        alert('Please enter a valid job URL.');
+        return;
+      }
+      openModal('Analyzing job posting...');
+      try {
+        const res = await fetch('/api/jobs/apply-url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: url, auto_apply: false, assisted: true })
+        });
+        const data = await res.json();
+        closeModal(`Staged in ${data.elapsed_seconds || 2.5}s (Fit: ${data.fit_score}%)`);
+        input.value = '';
+        await refreshAll();
+        switchView('queue');
+      } catch (e) {
+        alert('Failed: ' + e);
+        document.getElementById('processModal').style.display = 'none';
+      }
+    }
+
+    let stagedInSession = new Set();
+    let discoverPage = 1;
+
+    function renderDiscoveredCard(j, idx) {
+      return `
+        <div id="discCard_${idx}" class="job-card" style="margin-bottom: 0; padding: 16px 20px; transition: all 0.35s ease;">
+          <div class="job-header-row" style="margin-bottom: 6px;">
+            <div>
+              <div class="job-title" style="font-size: 14.5px;">${escapeStr(j.title)}</div>
+              <div class="job-company-meta">
+                <span class="tag-company">${escapeStr(j.company)}</span> &bull; 
+                <span class="tag-mono">${escapeStr(j.location || 'Germany')}</span> &bull; 
+                <span class="tag-mono" style="color: #3b82f6; border-color: rgba(59, 130, 246, 0.3);">${escapeStr(j.portal.toUpperCase())}</span>
+              </div>
+            </div>
+            <div class="fit-score-badge" style="font-size: 12.5px; font-weight: 700; ${j.fit_score >= 90 ? 'color:#10b981; border-color:rgba(16,185,129,0.3);' : (j.fit_score >= 80 ? 'color:#3b82f6; border-color:rgba(59,130,246,0.3);' : 'color:#f59e0b; border-color:rgba(245,158,11,0.3);')}">
+              ${j.fit_score}% Match
+            </div>
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px;">
+            ${escapeStr(j.description ? j.description.substring(0, 180) + '...' : '')}
+          </div>
+          <div id="discStatus_${idx}" style="display: none; font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; color: #3b82f6; margin-bottom: 8px;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid var(--border);">
+            <a href="${escapeStr(j.url)}" target="_blank" class="btn btn-outline" style="font-size: 11.5px; padding: 4px 10px;">View Posting</a>
+            <button id="discBtn_${idx}" class="btn btn-primary" onclick="stageDiscoveredJob(${idx})" style="font-size: 12px; padding: 6px 14px; font-weight: 600;">
+              Stage & Tailor Application
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function runDiscovery(reset = true) {
+      const modal = document.getElementById('discoverModal');
+      const container = document.getElementById('discoverListContainer');
+      modal.style.display = 'flex';
+      
+      if (reset) {
+        discoverPage = 1;
+        discoveredJobsCache = [];
+        container.innerHTML = `<p style="text-align:center; padding:40px; color:var(--text-dim); font-family:'IBM Plex Mono',monospace;">Scanning German tech job boards with active keyword matrix...</p>`;
+      }
+      
+      try {
+        const res = await fetch(`/api/discover?limit=12&page=${discoverPage}`);
+        const jobs = await res.json();
+        
+        const existingUrls = new Set(appJobs.map(j => (j.url || '').toLowerCase()));
+        const validJobs = (jobs || []).filter(j => {
+          const u = (j.url || '').toLowerCase();
+          const id = j.id || '';
+          return !stagedInSession.has(u) && !stagedInSession.has(id) && !existingUrls.has(u);
+        });
+
+        discoveredJobsCache = validJobs;
+
+        if (discoveredJobsCache.length === 0) {
+          container.innerHTML = `
+            <div style="text-align:center; padding:40px; color:var(--text-dim);">
+              <p style="margin-bottom:12px;">All active positions on page 1 have already been staged or reviewed.</p>
+              <button class="btn btn-primary" onclick="exploreMoreDiscoveredJobs()" style="font-size:12px; padding:6px 14px;">
+                Explore More Jobs
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        renderDiscoveryList();
+      } catch (e) {
+        container.innerHTML = `<p style="text-align:center; color:#ef4444; padding:40px;">Failed to scan job boards: ${e}</p>`;
+      }
+    }
+
+    function renderDiscoveryList() {
+      const container = document.getElementById('discoverListContainer');
+      if (!container) return;
+
+      const cardsHtml = discoveredJobsCache.map((j, idx) => renderDiscoveredCard(j, idx)).join('');
+      const footerHtml = `
+        <div id="exploreMoreFooter" style="text-align: center; padding: 16px 0 8px 0;">
+          <button id="exploreMoreBtn" class="btn btn-outline" onclick="exploreMoreDiscoveredJobs()" style="font-size: 12.5px; padding: 8px 20px; font-weight: 500;">
+            Explore More Jobs
+          </button>
+        </div>
+      `;
+      container.innerHTML = cardsHtml + footerHtml;
+    }
+
+    async function exploreMoreDiscoveredJobs() {
+      const btn = document.getElementById('exploreMoreBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="btn-spinner"></span> Scanning more positions (Page ${discoverPage + 1})...`;
+      }
+      
+      discoverPage++;
+      try {
+        const res = await fetch(`/api/discover?limit=12&page=${discoverPage}`);
+        const jobs = await res.json();
+        
+        const existingUrls = new Set(appJobs.map(j => (j.url || '').toLowerCase()));
+        const existingCacheUrls = new Set(discoveredJobsCache.map(j => (j.url || '').toLowerCase()));
+        
+        const newValidJobs = (jobs || []).filter(j => {
+          const u = (j.url || '').toLowerCase();
+          const id = j.id || '';
+          return !stagedInSession.has(u) && !stagedInSession.has(id) && !existingUrls.has(u) && !existingCacheUrls.has(u);
+        });
+
+        if (newValidJobs.length === 0) {
+          if (btn) {
+            btn.innerHTML = `No further matching positions found on page ${discoverPage}.`;
+            btn.disabled = true;
+          }
+          return;
+        }
+
+        const startIdx = discoveredJobsCache.length;
+        discoveredJobsCache = discoveredJobsCache.concat(newValidJobs);
+
+        const footerEl = document.getElementById('exploreMoreFooter');
+        if (footerEl) {
+          const newCardsContainer = document.createElement('div');
+          newCardsContainer.style.display = 'flex';
+          newCardsContainer.style.flexDirection = 'column';
+          newCardsContainer.style.gap = '12px';
+          newCardsContainer.innerHTML = newValidJobs.map((j, idx) => renderDiscoveredCard(j, startIdx + idx)).join('');
+          footerEl.parentNode.insertBefore(newCardsContainer, footerEl);
+        }
+
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `Explore More Jobs`;
+        }
+      } catch (e) {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `Explore More Jobs (Retry)`;
+        }
+      }
+    }
+
+    function closeDiscoverModal() {
+      document.getElementById('discoverModal').style.display = 'none';
+    }
+
+    async function stageDiscoveredJob(idx) {
+      const job = discoveredJobsCache[idx];
+      if (!job) return;
+      
+      if (job.url) stagedInSession.add(job.url.toLowerCase());
+      if (job.id) stagedInSession.add(job.id);
+      
+      const cardEl = document.getElementById(`discCard_${idx}`);
+      const btnEl = document.getElementById(`discBtn_${idx}`);
+      const statusEl = document.getElementById(`discStatus_${idx}`);
+      
+      if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.innerHTML = `<span class="btn-spinner"></span> Tailoring...`;
+      }
+      if (statusEl) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#3b82f6';
+        statusEl.innerText = `Analyzing requirements, selecting verified projects & compiling tailored documents for ${job.company}...`;
+      }
+
+      try {
+        const res = await fetch('/api/stage-discovered', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ job: job })
+        });
+        
+        if (!res.ok) {
+          const err = await res.json();
+          if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.innerHTML = `Stage & Tailor Application`;
+          }
+          if (statusEl) {
+            statusEl.style.color = '#ef4444';
+            statusEl.innerText = `Failed: ${err.detail || 'Could not stage job'}`;
+          }
+          return;
+        }
+        
+        const data = await res.json();
+        
+        if (btnEl) {
+          btnEl.style.background = '#10b981';
+          btnEl.style.borderColor = '#10b981';
+          btnEl.style.color = '#ffffff';
+          btnEl.innerHTML = `<svg class="icon" viewBox="0 0 24 24" style="stroke:#fff; width:13px; height:13px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Staged to Queue`;
+        }
+        if (statusEl) {
+          statusEl.style.color = '#10b981';
+          statusEl.innerText = `Staged in ${data.elapsed_seconds || 2.5}s (Fit: ${data.fit_score}%). Transitioning...`;
+        }
+        
+        await loadStats();
+        await loadJobs();
+        
+        setTimeout(() => {
+          if (cardEl) {
+            cardEl.classList.add('job-card-fall-away');
+            setTimeout(() => {
+              cardEl.remove();
+              const container = document.getElementById('discoverListContainer');
+              if (container && container.querySelectorAll('.job-card').length === 0) {
+                container.innerHTML = `
+                  <div style="text-align:center; padding:40px; color:var(--text-dim);">
+                    <p style="margin-bottom:12px;">All active positions have been staged to your dashboard queue.</p>
+                    <button class="btn btn-primary" onclick="exploreMoreDiscoveredJobs()" style="font-size:12px; padding:6px 14px;">
+                      Explore More Jobs
+                    </button>
+                  </div>
+                `;
+              }
+            }, 500);
+          }
+        }, 700);
+        
+      } catch (e) {
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.innerHTML = `Stage & Tailor Application`;
+        }
+        if (statusEl) {
+          statusEl.style.color = '#ef4444';
+          statusEl.innerText = `Error: ${e}`;
+        }
+      }
+    }
+
+    async function stageAllDiscovered() {
+      const highFitIndices = [];
+      discoveredJobsCache.forEach((j, idx) => {
+        if ((j.fit_score || 0) >= 70) highFitIndices.push(idx);
+      });
+      
+      if (highFitIndices.length === 0) {
+        showToast('No matching positions with >= 70% fit score found.', 'info');
+        return;
+      }
+      
+      const stageAllBtn = document.getElementById('stageAllDiscBtn');
+      if (stageAllBtn) {
+        stageAllBtn.disabled = true;
+        stageAllBtn.innerHTML = `<span class="btn-spinner"></span> Staging ${highFitIndices.length} Positions...`;
+      }
+      
+      for (const idx of highFitIndices) {
+        const cardEl = document.getElementById(`discCard_${idx}`);
+        if (cardEl && !cardEl.classList.contains('job-card-fall-away')) {
+          await stageDiscoveredJob(idx);
+          await new Promise(r => setTimeout(r, 400));
+        }
+      }
+      
+      if (stageAllBtn) {
+        stageAllBtn.disabled = false;
+        stageAllBtn.innerHTML = `Stage All Matches (&gt;70%)`;
+      }
+      showToast(`Staged all matching positions to your queue.`, 'success');
+    }
+
+    async function submitApp(jobId) {
+      openModal('Initializing autonomous browser engine...', 'submit');
+      try {
+        const res = await fetch(`/api/jobs/${jobId}/apply`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ job_id: jobId, assisted: false })
+        });
+        const result = await res.json();
+        closeModal(result.success ? 'Application submitted successfully' : 'Application finished');
+        if (result.success) {
+          showToast('Application submitted! Proof recorded in history.', 'success');
+        } else {
+          showToast(result.message || 'Application completed.', 'info');
+        }
+        await refreshAll();
+      } catch (e) {
+        showToast(`Error: ${e}`, 'error');
+        document.getElementById('processModal').style.display = 'none';
+      }
+    }
+
+    async function deleteJob(jobId) {
+      if (!confirm('Are you sure you want to remove this job card from your queue?')) return;
+      try {
+        const res = await fetch(`/api/jobs/${jobId}`, { method: 'DELETE' });
+        if (res.ok) {
+          await refreshAll();
+        } else {
+          alert('Failed to delete job card.');
+        }
+      } catch (e) {
+        alert('Error: ' + e);
+      }
+    }
+
+    async function updateCoverLetter(jobId) {
+      const text = document.getElementById(`txt_${jobId}`).value;
+      await fetch(`/api/jobs/${jobId}/update-anschreiben`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ job_id: jobId, anschreiben_text: text })
+      });
+    }
+
+    function openSession(loginUrl, displayName) {
+      if (loginUrl) {
+        window.open(loginUrl, '_blank');
+        showToast(`Opened ${displayName} login page in new tab.`, 'success');
+      }
+    }
+
+    async function handleImportCookies() {
+      const portal = document.getElementById('cookiePortalSelect').value;
+      const data = document.getElementById('cookieDataField').value.trim();
+      if (!data) {
+        alert('Please paste cookie or token value.');
+        return;
+      }
+      try {
+        const res = await fetch('/api/cookies/import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ portal: portal, cookie_data: data })
+        });
+        const result = await res.json();
+        if (result.status === 'success') {
+          showToast(`Authenticated ${portal} session successfully.`, 'success');
+          document.getElementById('cookieDataField').value = '';
+          await loadCookieStatus();
+          await loadPortals();
+        } else {
+          alert(`Authentication failed: ${result.message}`);
+        }
+      } catch (e) {
+        alert('Error saving cookie: ' + e);
+      }
+    }
+
+    async function loadCookieStatus() {
+      try {
+        const res = await fetch('/api/cookies/status');
+        const data = await res.json();
+        const tag = document.getElementById('cookieStatusTag');
+        if (!tag) return;
+        const valid = Object.entries(data).filter(([k, v]) => v.valid);
+        if (valid.length > 0) {
+          tag.innerText = `Active: ${valid.map(([k]) => k.toUpperCase()).join(', ')}`;
+          tag.style.color = '#10b981';
+          tag.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        } else {
+          tag.innerText = 'No Stored Session';
+          tag.style.color = 'var(--text-dim)';
+          tag.style.borderColor = 'var(--border)';
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      let toast = document.getElementById('toastNotice');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toastNotice';
+        toast.style.cssText = 'position:fixed; bottom:24px; right:24px; z-index:99999; padding:12px 20px; border-radius:8px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:8px; box-shadow:0 10px 25px rgba(0,0,0,0.15); transition:all 0.3s ease;';
+        document.body.appendChild(toast);
+      }
+      if (type === 'error') {
+        toast.style.background = '#ef4444';
+        toast.style.color = '#ffffff';
+      } else if (type === 'success') {
+        toast.style.background = '#10b981';
+        toast.style.color = '#ffffff';
+      } else {
+        toast.style.background = 'var(--text-main)';
+        toast.style.color = 'var(--bg)';
+      }
+      toast.innerText = message;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+      }, 4500);
+    }
+
+    function switchView(viewName) {
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      const btn = Array.from(document.querySelectorAll('.tab-button')).find(b => b.getAttribute('onclick')?.includes(viewName));
+      if (btn) btn.classList.add('active');
+
+      const content = document.getElementById(`tab-${viewName}`);
+      if (content) content.classList.add('active');
+
+      if (viewName === 'vault') { loadVault(); loadDocumentsVault(); loadKeywords(); }
+      if (viewName === 'portals') loadPortals();
+      if (viewName === 'history') loadHistory();
+    }
+
+    function escapeStr(text) {
+      if (!text) return '';
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    async function refreshAll() {
+      await loadStats();
+      await loadVault();
+      await loadDocumentsVault();
+      await loadKeywords();
+      await loadJobs();
+      await loadPortals();
+      await loadCookieStatus();
+    }
+
+    window.onload = () => {
+      initTheme();
+      refreshAll();
+    };
+  </script>
+</body>
+</html>

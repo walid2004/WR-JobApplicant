@@ -1,0 +1,64 @@
+{
+  "personal": {
+    "first_name": "Waled",
+    "last_name": "Mahaya",
+    "full_name": "Waled Mahaya",
+    "title_de": "Pflichtpraktikant",
+    "title_en": "Mandatory IT Intern",
+    "email": "lodaragab@gmail.com",
+    "phone": "+49 174 4850194",
+    "default_city": "Deggendorf",
+    "default_postal_code": "94469",
+    "default_street": "Hauptstraße 52",
+    "country": "Deutschland",
+    "birth_date": "05.04.2004",
+    "linkedin_url": "https://linkedin.com/in/waled-mahaya",
+    "linkedin_handle": "Waled-Mahaya",
+    "github_url": "https://github.com/walid2004",
+    "github_handle": "walid2004",
+    "portfolio_url": "https://walid2004.github.io",
+    "website_label": "Eigene Website",
+    "earliest_start_date": "01.05.2026",
+    "signature_text": "Waled Mahaya"
+  },
+  "status": {
+    "current_status": "Student im 4. Semester Künstliche Intelligenz",
+    "university": "Technische Hochschule Deggendorf",
+    "degree": "B.Sc. Artificial Intelligence",
+    "target_internship": "Pflichtpraktikum (20 Wochen / 6 Monate für Wintersemester 2026)",
+    "german_work_permit": true,
+    "visa_type": "Student Visa / Valid German Work Authorization (Pflichtpraktikum & Werkstudent)",
+    "working_student_eligible": true,
+    "earliest_start_date": "01.05.2026 / Wintersemester 2026 (01.08. - 01.11.2026)",
+    "weekly_hours": "Vollzeit (Pflichtpraktikum 40h/Woche) oder Werkstudent (20h/Woche)",
+    "work_model": "Vor Ort / Hybrid / Remote (Homeoffice)"
+  },
+  "summary_de": "Zielstrebiger AI Student im vierten Semester mit großem Hunger auf neues Wissen und praktische Erfahrung. Durch zahlreiche eigene Softwareprojekte bringe ich starke technische Fähigkeiten mit. Ich bin ein absolut zuverlässiger und freundlicher Teamplayer. Aktuell suche ich ein spannendes Pflichtpraktikum für das kommende Wintersemester, um mein theoretisches Wissen in der Praxis anzuwenden.",
+  "summary_en": "Ambitious fourth semester Artificial Intelligence student with a massive hunger for learning and practical experience. Equipped with a strong portfolio of complex programming projects. I am a highly reliable and friendly team player. Currently seeking a mandatory internship for the upcoming winter semester to apply my technical skills in a real world environment.",
+  "languages": [
+    { "language": "Deutsch", "level": "B2", "rating": 4 },
+    { "language": "Englisch", "level": "C1", "rating": 5 },
+    { "language": "Arabisch", "level": "Muttersprache", "rating": 5 },
+    { "language": "Französisch", "level": "A1", "rating": 1 }
+  ],
+  "education": [
+    {
+      "institution": "Technische Hochschule Deggendorf",
+      "degree": "B.Sc. Artificial Intelligence",
+      "period": "10.2024 – heute | Deggendorf, Deutschland",
+      "focus": "Künstliche Intelligenz, Deep Learning, Generative AI, Automatisierung & Softwareentwicklung"
+    },
+    {
+      "institution": "University of Kafrelsheikh",
+      "degree": "Studienleistungen in der Elektrotechnik (Paused)",
+      "period": "10.2022 – 07.2024 | Kafrelsheikh, Ägypten",
+      "focus": "Elektrotechnik, Schaltungslogik & Ingenieurwissenschaftliche Grundlagen"
+    },
+    {
+      "institution": "Al-Khansaa High School",
+      "degree": "Allgemeine Hochschulreife: Mathematik",
+      "period": "10.2019 – 08.2022 | Baltim, Ägypten",
+      "focus": "Mathematik & Naturwissenschaften"
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Anschreiben - {{ personal.full_name }}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 22mm 22mm 18mm 22mm;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #0f172a;
+    background: #ffffff;
+    line-height: 1.5;
+    font-size: 10.2pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  
+  .sender-block {
+    text-align: right;
+    font-size: 9.5pt;
+    color: #1e293b;
+    line-height: 1.45;
+    margin-bottom: 22px;
+  }
+  .sender-name {
+    font-weight: 600;
+    font-size: 10.5pt;
+  }
+  .sender-email a {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+
+  
+  .recipient-block {
+    font-size: 9.5pt;
+    line-height: 1.4;
+    margin-bottom: 20px;
+  }
+  .recipient-company {
+    font-weight: 600;
+  }
+
+  
+  .date-line {
+    text-align: right;
+    font-size: 9.5pt;
+    color: #0f172a;
+    margin-bottom: 16px;
+  }
+
+  
+  .subject-line {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 14px;
+  }
+
+  
+  .salutation {
+    font-size: 10pt;
+    margin-bottom: 12px;
+  }
+
+  
+  .letter-text p {
+    margin-bottom: 12px;
+    text-align: justify;
+    line-height: 1.5;
+    color: #1e293b;
+  }
+
+  
+  .closing-block {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .closing-text {
+    font-size: 10pt;
+    margin-bottom: 6px;
+    color: #0f172a;
+  }
+  .signature-container {
+    margin: 4px 0 6px 0;
+    width: 175px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .signature-img {
+    height: 85px;
+    width: auto;
+    max-width: 175px;
+    object-fit: contain;
+    display: block;
+  }
+  .printed-name {
+    font-weight: 600;
+    font-size: 10.5pt;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .social-links-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .social-link-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #334155;
+    text-decoration: none;
+    font-size: 8.8pt;
+    font-weight: 500;
+  }
+  .social-link-item:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+  .social-link-item svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+</style>
+</head>
+<body>
+
+
+<div class="sender-block">
+  <div class="sender-name">{{ personal.full_name }}</div>
+  <div>{{ localized_address.street or personal.default_street or 'Hauptstraße 52' }}</div>
+  <div>{{ localized_address.postal_code or personal.default_postal_code or '94469' }} {{ localized_address.city or personal.default_city or 'Deggendorf' }}</div>
+  <div>Tel.: <a href="tel:{{ personal.phone }}" style="color: inherit; text-decoration: none;">{{ personal.phone }}</a></div>
+  <div class="sender-email">E-Mail: <a href="mailto:{{ personal.email }}">{{ personal.email }}</a></div>
+</div>
+
+
+<div class="recipient-block">
+  <div class="recipient-company">{{ company }}</div>
+  <div>z. Hd. Recruiting Team</div>
+  <div>{{ localized_address.city or 'München' }}, Deutschland</div>
+</div>
+
+
+<div class="date-line">
+  {{ localized_address.city or 'Deggendorf' }}, {{ date_today }}
+</div>
+
+
+<div class="subject-line">
+  {{ anschreiben.betreff or ('Bewerbung als Pflichtpraktikant – ' ~ job_title) }}
+</div>
+
+
+<div class="salutation">
+  {{ anschreiben.anrede or ('Hallo liebes ' ~ company ~ ' Team,') }}
+</div>
+
+
+<div class="letter-text">
+  <p>{{ anschreiben.einleitung }}</p>
+  <p>{{ anschreiben.hauptteil_projekte }}</p>
+  <p>{{ anschreiben.mehrwert_und_arbeitsweise }}</p>
+  <p>{{ anschreiben.schlusssatz }}</p>
+</div>
+
+
+<div class="closing-block">
+  <div class="closing-text">
+    {{ anschreiben.grussformel or 'Viele Grüße' }}
+  </div>
+
+  
+  <div class="signature-container">
+    {% if signature_b64 %}
+      <img src="{{ signature_b64 }}" class="signature-img" alt="Unterschrift">
+    {% else %}
+      <svg viewBox="0 0 364 323" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M362.934 152.815C314.934 161.815 314.934 88.8151 335.434 120.815C355.934 152.815 359.154 243.172 335.434 246.315C299.114 251.128 193.066 165.596 205.434 152.815C217.802 140.034 221.434 184.815 160.934 173.315C112.534 164.115 38.101 110.148 6.93433 84.3151C29.4929 80.4343 53.6563 101.19 59.4343 107.315C82.4377 131.699 244.807 286.127 272.934 313.315C319.07 357.909 224.647 132.618 187.434 0.815125" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    {% endif %}
+  </div>
+
+  <div class="printed-name">
+    {{ personal.full_name }}
+  </div>
+
+  
+  <div class="social-links-row">
+    <a href="https://linkedin.com/in/waled-mahaya" target="_blank" class="social-link-item">
+      <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.64c-.87 0-1.58.7-1.58 1.58 0 .87.71 1.58 1.58 1.58.88 0 1.58-.71 1.58-1.58 0-.88-.7-1.58-1.58-1.58Z"/></svg>
+      <span>LinkedIn</span>
+    </a>
+    <a href="https://github.com/walid2004" target="_blank" class="social-link-item">
+      <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"/></svg>
+      <span>GitHub</span>
+    </a>
+    <a href="mailto:{{ personal.email }}" class="social-link-item">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      <span>E-Mail</span>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

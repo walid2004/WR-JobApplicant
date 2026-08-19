@@ -1,0 +1,24 @@
+{
+  "skills_with_ratings": [
+    { "name": "Python", "rating": 5 },
+    { "name": "TypeScript", "rating": 4 },
+    { "name": "PostgreSQL", "rating": 4 },
+    { "name": "Git", "rating": 4 },
+    { "name": "TensorFlow", "rating": 4 },
+    { "name": "NumPy", "rating": 4 },
+    { "name": "Express.js", "rating": 3 },
+    { "name": "Flask", "rating": 3 },
+    { "name": "Next.js", "rating": 4 },
+    { "name": "React", "rating": 4 },
+    { "name": "Tailwind CSS", "rating": 4 },
+    { "name": "Docker", "rating": 3 },
+    { "name": "N8n", "rating": 3 },
+    { "name": "MS Office", "rating": 4 }
+  ],
+  "categories": {
+    "programming_languages": ["Python", "TypeScript", "JavaScript", "SQL", "HTML/CSS"],
+    "ai_and_machine_learning": ["TensorFlow", "scikit-learn", "OpenCV", "Tesseract OCR", "NumPy", "Pandas", "Random Forest", "KNN", "Generative AI"],
+    "web_and_backend": ["React", "Next.js", "Node.js", "Express.js", "Flask", "FastAPI", "WebSockets", "Framer Motion", "Tailwind CSS"],
+    "databases_and_tools": ["PostgreSQL", "MongoDB", "Git & GitHub", "Docker", "N8n", "CI/CD", "MS Office"]
+  }
+}

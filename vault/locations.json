@@ -1,0 +1,81 @@
+{
+  "default_fallback": {
+    "city": "Munich",
+    "postal_code": "80333",
+    "street": "Brienner Straße 18",
+    "state": "Bayern",
+    "country": "Germany"
+  },
+  "regions": {
+    "munich": {
+      "keywords": ["munich", "münchen", "garching", "unterföhring", "ismaning", "feldkirchen", "planegg", "germering", "bayern", "bavaria", "bmw", "siemens"],
+      "city": "München",
+      "postal_code": "80333",
+      "street": "Brienner Straße 18",
+      "state": "Bayern"
+    },
+    "stuttgart": {
+      "keywords": ["stuttgart", "sindelfingen", "böblingen", "esslingen", "waiblingen", "feuerbach", "baden-württemberg", "mercedes", "porsche", "bosch"],
+      "city": "Stuttgart",
+      "postal_code": "70173",
+      "street": "Königstraße 26",
+      "state": "Baden-Württemberg"
+    },
+    "berlin": {
+      "keywords": ["berlin", "potsdam", "brandenburg"],
+      "city": "Berlin",
+      "postal_code": "10115",
+      "street": "Invalidenstraße 42",
+      "state": "Berlin"
+    },
+    "frankfurt": {
+      "keywords": ["frankfurt", "frankfurt am main", "wiesbaden", "mainz", "darmstadt", "offenbach", "eschborn", "hessen"],
+      "city": "Frankfurt am Main",
+      "postal_code": "60311",
+      "street": "Taunusanlage 8",
+      "state": "Hessen"
+    },
+    "hamburg": {
+      "keywords": ["hamburg", "harburg", "norderstedt", "ahrensburg", "elmshorn"],
+      "city": "Hamburg",
+      "postal_code": "20095",
+      "street": "Mönckebergstraße 11",
+      "state": "Hamburg"
+    },
+    "cologne_duesseldorf_nrw": {
+      "keywords": ["köln", "cologne", "düsseldorf", "bonn", "dortmund", "essen", "duisburg", "bochum", "aachen", "nrw", "nordrhein-westfalen"],
+      "city": "Köln",
+      "postal_code": "50667",
+      "street": "Hohe Straße 52",
+      "state": "Nordrhein-Westfalen"
+    },
+    "nuremberg": {
+      "keywords": ["nürnberg", "nuremberg", "erlangen", "fürth", "franken", "nordbayern"],
+      "city": "Nürnberg",
+      "postal_code": "90402",
+      "street": "Königstraße 40",
+      "state": "Bayern"
+    },
+    "karlsruhe": {
+      "keywords": ["karlsruhe", "mannheim", "heidelberg", "bruchsal", "walldorf", "sap"],
+      "city": "Karlsruhe",
+      "postal_code": "76133",
+      "street": "Kaiserstraße 92",
+      "state": "Baden-Württemberg"
+    },
+    "leipzig_dresden": {
+      "keywords": ["leipzig", "dresden", "chemnitz", "halle", "sachsen"],
+      "city": "Leipzig",
+      "postal_code": "04109",
+      "street": "Grimmaische Straße 15",
+      "state": "Sachsen"
+    },
+    "remote": {
+      "keywords": ["remote", "deutschlandweit", "home office", "bundesweit", "anywhere"],
+      "city": "München",
+      "postal_code": "80333",
+      "street": "Brienner Straße 18",
+      "state": "Deutschlandweit / Remote"
+    }
+  }
+}
