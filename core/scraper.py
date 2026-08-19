@@ -133,57 +133,59 @@ class JobScraper:
                 except Exception:
                     pass
 
-        try:
-            resp = requests.get(job_url, headers=self.headers, timeout=8)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
-                page_title = (soup.title.string or "") if soup.title else ""
-                is_challenge = any(b in page_title.lower() for b in BLOCKED_TITLES)
+        if not ("indeed." in job_url):
+            try:
+                resp = requests.get(job_url, headers=self.headers, timeout=8)
+                if resp.status_code == 200:
+                    soup = BeautifulSoup(resp.text, "html.parser")
+                    page_title = (soup.title.string or "") if soup.title else ""
+                    is_challenge = any(b in page_title.lower() for b in BLOCKED_TITLES)
 
-                if not is_challenge:
-                    json_ld_data = self._extract_from_json_ld(soup)
-                    if json_ld_data and len(json_ld_data["description"]) > 100:
-                        url_hash = hashlib.md5(job_url.encode("utf-8")).hexdigest()[:10]
-                        return {
-                            "id": f"{portal}_{url_hash}",
-                            "title": json_ld_data["title"],
-                            "company": json_ld_data["company"],
-                            "location": json_ld_data["location"],
-                            "url": job_url,
-                            "portal": portal,
-                            "description": json_ld_data["description"],
-                            "salary": "",
-                            "employment_type": "Praktikum / Werkstudent",
-                            "date_posted": ""
-                        }
+                    if not is_challenge:
+                        json_ld_data = self._extract_from_json_ld(soup)
+                        if json_ld_data and len(json_ld_data["description"]) > 100 and not any(b in json_ld_data["title"].lower() for b in BLOCKED_TITLES):
+                            url_hash = hashlib.md5(job_url.encode("utf-8")).hexdigest()[:10]
+                            return {
+                                "id": f"{portal}_{url_hash}",
+                                "title": json_ld_data["title"],
+                                "company": json_ld_data["company"],
+                                "location": json_ld_data["location"],
+                                "url": job_url,
+                                "portal": portal,
+                                "description": json_ld_data["description"],
+                                "salary": "",
+                                "employment_type": "Praktikum / Werkstudent",
+                                "date_posted": ""
+                            }
 
-                    title_elem = soup.find("h1") or soup.find("h2")
-                    title = title_elem.get_text(strip=True) if title_elem else "Internship Position"
-                    company = self._detect_company(job_url, title)
+                        title_elem = soup.find("h1") or soup.find("h2")
+                        title = title_elem.get_text(strip=True) if title_elem else "Internship Position"
+                        company = self._detect_company(job_url, title)
 
-                    for unwanted in soup(["script", "style", "nav", "footer", "header", "noscript"]):
-                        unwanted.decompose()
+                        if not any(b in title.lower() for b in BLOCKED_TITLES):
+                            for unwanted in soup(["script", "style", "nav", "footer", "header", "noscript"]):
+                                unwanted.decompose()
 
-                    desc_elem = soup.find("main") or soup.find("article") or soup.find("div", class_=re.compile(r'job|desc|content|detail', re.I)) or soup.body
-                    desc_text = desc_elem.get_text(separator="\n").strip() if desc_elem else soup.get_text(separator="\n").strip()
-                    desc_text = re.sub(r'\n{3,}', '\n\n', desc_text)
+                            desc_elem = soup.find("main") or soup.find("article") or soup.find("div", class_=re.compile(r'job|desc|content|detail', re.I)) or soup.body
+                            desc_text = desc_elem.get_text(separator="\n").strip() if desc_elem else soup.get_text(separator="\n").strip()
+                            desc_text = re.sub(r'\n{3,}', '\n\n', desc_text)
 
-                    if len(desc_text) > 150:
-                        url_hash = hashlib.md5(job_url.encode("utf-8")).hexdigest()[:10]
-                        return {
-                            "id": f"{portal}_{url_hash}",
-                            "title": title[:120],
-                            "company": company,
-                            "location": "Germany",
-                            "url": job_url,
-                            "portal": portal,
-                            "description": desc_text[:4000],
-                            "salary": "",
-                            "employment_type": "Praktikum / Werkstudent",
-                            "date_posted": ""
-                        }
-        except Exception:
-            pass
+                            if len(desc_text) > 150 and not any(b in desc_text[:300].lower() for b in BLOCKED_TITLES):
+                                url_hash = hashlib.md5(job_url.encode("utf-8")).hexdigest()[:10]
+                                return {
+                                    "id": f"{portal}_{url_hash}",
+                                    "title": title[:120],
+                                    "company": company,
+                                    "location": "Germany",
+                                    "url": job_url,
+                                    "portal": portal,
+                                    "description": desc_text[:4000],
+                                    "salary": "",
+                                    "employment_type": "Praktikum / Werkstudent",
+                                    "date_posted": ""
+                                }
+            except Exception:
+                pass
 
         try:
             from core.automation.browser_manager import BrowserSessionManager

@@ -1563,6 +1563,17 @@
     let tInterval = null;
     let tStart = 0;
 
+    function appendLog(msg, type = 'normal') {
+      const logs = document.getElementById('terminalLogs');
+      if (!logs) return;
+      const sec = tStart > 0 ? ((Date.now() - tStart) / 1000).toFixed(1) : '0.0';
+      const div = document.createElement('div');
+      div.className = `terminal-line ${type}`;
+      div.innerText = `[${sec}s] ${msg}`;
+      logs.appendChild(div);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
     function openModal(initialMsg = 'Processing job posting...', mode = 'analyze') {
       const modal = document.getElementById('processModal');
       const logs = document.getElementById('terminalLogs');
@@ -1571,15 +1582,6 @@
       modal.style.display = 'flex';
       tStart = Date.now();
       
-      function appendLog(msg, type = 'normal') {
-        const sec = ((Date.now() - tStart) / 1000).toFixed(1);
-        const div = document.createElement('div');
-        div.className = `terminal-line ${type}`;
-        div.innerText = `[${sec}s] ${msg}`;
-        logs.appendChild(div);
-        logs.scrollTop = logs.scrollHeight;
-      }
-
       appendLog(initialMsg, 'highlight');
       
       let step = 0;
@@ -1605,7 +1607,7 @@
     function closeModal(finalMsg = 'Done') {
       clearInterval(tInterval);
       const modal = document.getElementById('processModal');
-      modal.style.display = 'none';
+      if (modal) modal.style.display = 'none';
     }
 
     async function handleAnalyzeUrl() {
