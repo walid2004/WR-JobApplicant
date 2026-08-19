@@ -232,18 +232,19 @@ class JobScraper:
                 desc_text = re.sub(r'\n{3,}', '\n\n', desc_text)
                 url_hash = hashlib.md5(job_url.encode("utf-8")).hexdigest()[:10]
 
-                return {
-                    "id": f"{portal}_{url_hash}",
-                    "title": title[:120],
-                    "company": company,
-                    "location": "Germany",
-                    "url": job_url,
-                    "portal": portal,
-                    "description": desc_text[:4000],
-                    "salary": "",
-                    "employment_type": "Praktikum / Werkstudent",
-                    "date_posted": ""
-                }
+                if not any(b in title.lower() for b in BLOCKED_TITLES) and len(desc_text) > 100 and not any(b in desc_text[:300].lower() for b in BLOCKED_TITLES):
+                    return {
+                        "id": f"{portal}_{url_hash}",
+                        "title": title[:120],
+                        "company": company,
+                        "location": "Germany",
+                        "url": job_url,
+                        "portal": portal,
+                        "description": desc_text[:4000],
+                        "salary": "",
+                        "employment_type": "Praktikum / Werkstudent",
+                        "date_posted": ""
+                    }
             finally:
                 mgr.close()
         except Exception as e:

@@ -18,16 +18,25 @@ class BrowserSessionManager:
 
     def start(self) -> tuple:
         self._playwright = sync_playwright().start()
-        self._context = self._playwright.chromium.launch_persistent_context(
-            user_data_dir=self.profile_dir,
-            headless=self.headless,
-            viewport={"width": 1280, "height": 800},
-            slow_mo=100,
-            args=[
+        launch_kwargs = {
+            "user_data_dir": self.profile_dir,
+            "headless": self.headless,
+            "viewport": {"width": 1280, "height": 800},
+            "locale": "de-DE",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "args": [
                 "--disable-blink-features=AutomationControlled",
-                "--start-maximized"
+                "--start-maximized",
+                "--no-sandbox"
             ]
-        )
+        }
+        try:
+            self._context = self._playwright.chromium.launch_persistent_context(channel="chrome", **launch_kwargs)
+        except Exception:
+            try:
+                self._context = self._playwright.chromium.launch_persistent_context(channel="msedge", **launch_kwargs)
+            except Exception:
+                self._context = self._playwright.chromium.launch_persistent_context(**launch_kwargs)
         cookie_file = os.path.join(self.profile_dir, "cookies.json")
         if os.path.exists(cookie_file):
             try:
