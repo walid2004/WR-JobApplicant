@@ -189,9 +189,17 @@ def import_cookies(req: CookieImportRequest):
             })
         elif "indeed" in req.portal.lower():
             parsed_cookies.append({
-                "name": "CTK",
+                "name": "SURF",
                 "value": raw,
                 "domain": ".indeed.com",
+                "path": "/",
+                "secure": True,
+                "httpOnly": True
+            })
+            parsed_cookies.append({
+                "name": "SURF",
+                "value": raw,
+                "domain": "de.indeed.com",
                 "path": "/",
                 "secure": True,
                 "httpOnly": True
