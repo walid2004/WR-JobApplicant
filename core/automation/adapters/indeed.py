@@ -125,29 +125,19 @@ class IndeedApplyAdapter(BaseApplicationAdapter):
             personal = self.profile.get("personal", {})
             status_info = self.profile.get("status", {})
 
-            login_indicators = [
-                "text='Ready to take the next step'",
-                "text='Create an account or sign in'",
-                "text='Sign in with Apple'",
-                "text='Continue with Google'",
-                "button:has-text('Continue with Google')",
-                "button:has-text('Continue with Apple')"
-            ]
-            for l_sel in login_indicators:
+            email_prompt_loc = self.page.locator("input[type='email'], input#ifl-InputFormField-3, input[name='__email'], input[aria-label*='Email'], input[aria-label*='E-Mail']")
+            if email_prompt_loc.count() > 0 and email_prompt_loc.first.is_visible():
                 try:
-                    loc = self.page.locator(l_sel)
-                    if loc.count() > 0 and loc.first.is_visible():
-                        self.page.screenshot(path=screenshot_path)
-                        return {
-                            "success": False,
-                            "status": "LOGIN_REQUIRED",
-                            "message": "Indeed requires active account login. Please save your session cookies in Session & Portals tab or log in via browser window.",
-                            "screenshot_path": screenshot_path
-                        }
+                    email_prompt_loc.first.fill(personal.get("email", "lodaragab@gmail.com"))
+                    self.page.wait_for_timeout(400)
+                    cont_btn = self.page.locator("button:has-text('Continue'), button:has-text('Weiter'), button[type='submit']").first
+                    if cont_btn.count() > 0 and cont_btn.is_visible():
+                        self._click_safe(cont_btn)
+                        self.page.wait_for_timeout(3000)
                 except Exception:
                     pass
 
-            for step in range(8):
+            for step in range(10):
                 self._dismiss_overlays_and_cookies()
 
                 inputs = self.page.locator("input[type='text'], input[type='email'], input[type='tel'], input:not([type]), textarea")
