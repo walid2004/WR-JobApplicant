@@ -122,6 +122,9 @@ class IndeedApplyAdapter(BaseApplicationAdapter):
                     assisted_mode=assisted_mode
                 )
 
+            personal = self.profile.get("personal", {})
+            status_info = self.profile.get("status", {})
+
             login_indicators = [
                 "text='Ready to take the next step'",
                 "text='Create an account or sign in'",
@@ -138,11 +141,14 @@ class IndeedApplyAdapter(BaseApplicationAdapter):
                         return {
                             "success": False,
                             "status": "LOGIN_REQUIRED",
-                            "message": "Indeed requires active account login. Please apply directly via your logged-in browser tab.",
+                            "message": "Indeed requires active account login. Please save your session cookies in Session & Portals tab or log in via browser window.",
                             "screenshot_path": screenshot_path
                         }
                 except Exception:
                     pass
+
+            for step in range(8):
+                self._dismiss_overlays_and_cookies()
 
                 inputs = self.page.locator("input[type='text'], input[type='email'], input[type='tel'], input:not([type]), textarea")
                 for i in range(inputs.count()):
@@ -162,7 +168,7 @@ class IndeedApplyAdapter(BaseApplicationAdapter):
 
                         if any(k in desc for k in ["phone", "telefon", "mobile", "tel"]):
                             inp.fill(personal.get("phone", "+49 174 4850194"))
-                        elif any(k in desc for k in ["name", "full_name"]):
+                        elif any(k in desc for k in ["name", "full_name", "first_name", "vorname", "nachname"]):
                             inp.fill(personal.get("full_name", "Waled Mahaya"))
                         elif any(k in desc for k in ["city", "stadt", "location", "ort"]):
                             inp.fill(personal.get("default_city", "München"))

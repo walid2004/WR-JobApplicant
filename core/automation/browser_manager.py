@@ -28,6 +28,33 @@ class BrowserSessionManager:
                 "--start-maximized"
             ]
         )
+        cookie_file = os.path.join(self.profile_dir, "cookies.json")
+        if os.path.exists(cookie_file):
+            try:
+                import json
+                with open(cookie_file, "r", encoding="utf-8") as f:
+                    cookies = json.load(f)
+                if cookies and isinstance(cookies, list):
+                    valid_cookies = []
+                    for c in cookies:
+                        if c.get("name") and c.get("value"):
+                            entry = {
+                                "name": c["name"],
+                                "value": c["value"],
+                                "path": c.get("path", "/")
+                            }
+                            if c.get("domain"):
+                                entry["domain"] = c["domain"]
+                            else:
+                                entry["url"] = "https://de.indeed.com"
+                            if "secure" in c: entry["secure"] = c["secure"]
+                            if "httpOnly" in c: entry["httpOnly"] = c["httpOnly"]
+                            valid_cookies.append(entry)
+                    if valid_cookies:
+                        self._context.add_cookies(valid_cookies)
+            except Exception:
+                pass
+
         page = self._context.pages[0] if self._context.pages else self._context.new_page()
         return self._playwright, self._context, page
 
