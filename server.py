@@ -237,6 +237,7 @@ def get_cookie_status():
     except Exception:
         return {"total_cookies": 0, "domains": []}
 
+@app.post("/api/jobs/apply-url")
 @app.post("/api/process-url")
 def process_job_url(req: URLApplyRequest):
     """Scrapes any URL (BMW, Siemens, LinkedIn, etc.), parses with Qwen, and stages application."""

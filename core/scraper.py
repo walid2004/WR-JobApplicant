@@ -186,16 +186,39 @@ class JobScraper:
             pass
 
         try:
-            with sync_playwright() as p:
-                browser = p.chromium.launch(headless=True)
-                page = browser.new_page()
+            from core.automation.browser_manager import BrowserSessionManager
+            mgr = BrowserSessionManager(headless=True)
+            p_obj, ctx, page = mgr.start()
+            try:
                 page.goto(job_url, timeout=25000, wait_until="domcontentloaded")
-                page.wait_for_timeout(2500)
+                page.wait_for_timeout(2000)
+
+                if "indeed." in job_url:
+                    t_loc = page.locator("h1[data-testid='jobsearch-JobInfoHeader-title'], h1.jobsearch-JobInfoHeader-title, h1").first
+                    title = t_loc.inner_text().strip() if t_loc.count() > 0 else "Internship Position"
+                    c_loc = page.locator("div[data-testid='inlineHeader-companyName'], div.jobsearch-InlineCompanyRating-companyHeader, span[data-testid='inlineHeader-companyName']").first
+                    company = c_loc.inner_text().strip() if c_loc.count() > 0 else self._detect_company(job_url, title)
+                    l_loc = page.locator("div[data-testid='inlineHeader-companyLocation'], div.jobsearch-JobInfoHeader-companyLocation").first
+                    location = l_loc.inner_text().strip() if l_loc.count() > 0 else "Germany"
+                    d_loc = page.locator("div#jobDescriptionText, div.jobsearch-jobDescriptionText").first
+                    desc_text = d_loc.inner_text().strip() if d_loc.count() > 0 else ""
+                    if len(desc_text) > 100:
+                        url_hash = hashlib.md5(job_url.encode("utf-8")).hexdigest()[:10]
+                        return {
+                            "id": f"indeed_{url_hash}",
+                            "title": title[:120],
+                            "company": company[:80],
+                            "location": location,
+                            "url": job_url,
+                            "portal": "indeed",
+                            "description": desc_text[:4000],
+                            "salary": "",
+                            "employment_type": "Praktikum / Werkstudent",
+                            "date_posted": ""
+                        }
 
                 html = page.content()
                 soup = BeautifulSoup(html, "html.parser")
-                browser.close()
-
                 title_elem = soup.find("h1") or soup.find("h2")
                 title = title_elem.get_text(strip=True) if title_elem else "Internship Position"
                 company = self._detect_company(job_url, title)
@@ -219,6 +242,8 @@ class JobScraper:
                     "employment_type": "Praktikum / Werkstudent",
                     "date_posted": ""
                 }
+            finally:
+                mgr.close()
         except Exception as e:
             print(f"[Scraper Error] Failed to extract from {job_url}: {e}")
 

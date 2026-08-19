@@ -1615,21 +1615,29 @@
         alert('Please enter a valid job URL.');
         return;
       }
-      openModal('Analyzing job posting...');
+      openModal('Analyzing job posting...', 'stage');
       try {
-        const res = await fetch('/api/jobs/apply-url', {
+        const res = await fetch('/api/process-url', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url: url, auto_apply: false, assisted: true })
         });
         const data = await res.json();
-        closeModal(`Staged in ${data.elapsed_seconds || 2.5}s (Fit: ${data.fit_score}%)`);
+        if (!res.ok) {
+          throw new Error(data.detail || 'Failed to extract content from the URL');
+        }
+        appendLog(`Successfully staged: ${data.job?.title || 'Position'} at ${data.job?.company || 'Company'} (${data.fit_score || 90}% Match)`, 'highlight');
+        await new Promise(r => setTimeout(r, 900));
+        closeModal();
         input.value = '';
         await refreshAll();
         switchView('queue');
       } catch (e) {
-        alert('Failed: ' + e);
-        document.getElementById('processModal').style.display = 'none';
+        appendLog(`Staging Error: ${e.message || e}`, 'error');
+        setTimeout(() => {
+          closeModal();
+          alert('Staging Failed: ' + (e.message || e));
+        }, 1800);
       }
     }
 
