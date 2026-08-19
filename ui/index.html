@@ -1654,6 +1654,13 @@
         alert('Please enter a valid job URL.');
         return;
       }
+
+      if (url.toLowerCase().includes('indeed.')) {
+        openManualStageModal(url);
+        showToast('Indeed is Cloudflare-protected. Please paste the job description text below.', 'info');
+        return;
+      }
+
       openModal('Analyzing job posting...', 'stage');
       try {
         const res = await fetch('/api/process-url', {
@@ -1676,7 +1683,7 @@
         setTimeout(() => {
           closeModal();
           openManualStageModal(url);
-        }, 1200);
+        }, 800);
       }
     }
 

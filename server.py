@@ -4,6 +4,7 @@ import subprocess
 import json
 import asyncio
 import time
+import hashlib
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, UploadFile, File, Form
