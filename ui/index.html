@@ -860,11 +860,48 @@
         <div class="candidate-meta">Waled Mahaya &bull; B.Sc. Artificial Intelligence (THD) &bull; Pflichtpraktikum 2026</div>
       </div>
       <div class="url-input-bar">
-        <input type="text" id="urlField" class="url-input" placeholder="Paste job URL from BMW, Siemens, Mercedes-Benz, LinkedIn, or Personio...">
+        <input type="text" id="urlField" class="url-input" placeholder="Paste job URL from Indeed, LinkedIn, BMW, Siemens, Mercedes, or Personio...">
         <button class="btn btn-primary" onclick="handleAnalyzeUrl()">
           <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
           Analyze & Stage
         </button>
+        <button class="btn btn-outline" onclick="openManualStageModal()" title="Paste job details directly">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+          Paste Job Text
+        </button>
+      </div>
+    </div>
+
+    <div id="manualStageModal" class="modal-overlay" style="display: none;">
+      <div class="modal-container" style="max-width: 580px;">
+        <div class="modal-header">
+          <div class="modal-title-text">Stage Job & Tailor Application</div>
+          <button class="btn btn-outline" onclick="closeManualStageModal()" style="padding: 3px 8px; font-size: 11px;">Close</button>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Job URL</label>
+            <input type="text" id="manualStageUrl" class="login-input" placeholder="https://de.indeed.com/viewjob?jk=...">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Job Title (Optional)</label>
+              <input type="text" id="manualStageTitle" class="login-input" placeholder="e.g. Praktikum AI Engineer">
+            </div>
+            <div>
+              <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Company Name (Optional)</label>
+              <input type="text" id="manualStageCompany" class="login-input" placeholder="e.g. Celonis / Siemens">
+            </div>
+          </div>
+          <div>
+            <label style="font-size: 11.5px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Job Description & Requirements *</label>
+            <textarea id="manualStageDesc" class="login-input" style="height: 140px; resize: vertical;" placeholder="Paste the job posting description, requirements, and tasks here..."></textarea>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+            <button class="btn btn-outline" onclick="closeManualStageModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="submitManualStage()">Tailor & Stage Application</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1635,11 +1672,63 @@
         await refreshAll();
         switchView('queue');
       } catch (e) {
-        appendLog(`Staging Error: ${e.message || e}`, 'error');
+        appendLog(`Staging Notice: ${e.message || e}`, 'error');
         setTimeout(() => {
           closeModal();
-          alert('Staging Failed: ' + (e.message || e));
-        }, 1800);
+          openManualStageModal(url);
+        }, 1200);
+      }
+    }
+
+    function openManualStageModal(url = '') {
+      document.getElementById('manualStageUrl').value = url;
+      document.getElementById('manualStageModal').style.display = 'flex';
+    }
+
+    function closeManualStageModal() {
+      document.getElementById('manualStageModal').style.display = 'none';
+    }
+
+    async function submitManualStage() {
+      const url = document.getElementById('manualStageUrl').value.trim();
+      const title = document.getElementById('manualStageTitle').value.trim();
+      const company = document.getElementById('manualStageCompany').value.trim();
+      const desc = document.getElementById('manualStageDesc').value.trim();
+
+      if (!desc) {
+        alert('Please paste the job description or requirements.');
+        return;
+      }
+      closeManualStageModal();
+      openModal('Analyzing requirements & compiling tailored documents...', 'stage');
+      try {
+        const res = await fetch('/api/process-url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: url || 'https://de.indeed.com/viewjob?manual=1',
+            title: title || 'Praktikum / Werkstudent',
+            company: company || 'Employer',
+            description: desc,
+            auto_apply: false,
+            assisted: true
+          })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Failed to stage job');
+        appendLog(`Successfully staged: ${data.job?.title || 'Position'} at ${data.job?.company || 'Company'} (${data.fit_score || 90}% Match)`, 'highlight');
+        await new Promise(r => setTimeout(r, 900));
+        closeModal();
+        document.getElementById('manualStageDesc').value = '';
+        document.getElementById('manualStageTitle').value = '';
+        document.getElementById('manualStageCompany').value = '';
+        document.getElementById('manualStageUrl').value = '';
+        document.getElementById('urlField').value = '';
+        await refreshAll();
+        switchView('queue');
+      } catch (err) {
+        appendLog(`Error: ${err.message || err}`, 'error');
+        setTimeout(() => { closeModal(); alert('Staging failed: ' + (err.message || err)); }, 1500);
       }
     }
 

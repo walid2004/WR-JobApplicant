@@ -43,6 +43,10 @@ orchestrator = AgentOrchestrator()
 
 class URLApplyRequest(BaseModel):
     url: str
+    title: Optional[str] = None
+    company: Optional[str] = None
+    description: Optional[str] = None
+    portal: Optional[str] = None
     auto_apply: bool = False
     assisted: bool = True
 
@@ -248,7 +252,24 @@ def get_cookie_status():
 @app.post("/api/jobs/apply-url")
 @app.post("/api/process-url")
 def process_job_url(req: URLApplyRequest):
-    """Scrapes any URL (BMW, Siemens, LinkedIn, etc.), parses with Qwen, and stages application."""
+    if req.description and len(req.description.strip()) > 30:
+        url_clean = req.url.strip()
+        url_hash = hashlib.md5(url_clean.encode("utf-8")).hexdigest()[:10]
+        portal_name = req.portal or ("indeed" if "indeed" in url_clean else ("linkedin" if "linkedin" in url_clean else "direct"))
+        job_data = {
+            "id": f"{portal_name}_{url_hash}",
+            "title": req.title or "Internship Position",
+            "company": req.company or "Company",
+            "location": "Germany",
+            "url": url_clean,
+            "portal": portal_name,
+            "description": req.description,
+            "salary": "",
+            "employment_type": "Praktikum / Werkstudent",
+            "date_posted": ""
+        }
+        return orchestrator.process_and_stage_job(job_data, auto_apply=req.auto_apply, assisted=req.assisted)
+
     scraped_job = orchestrator.scraper.fetch_job_from_url(req.url)
     if not scraped_job:
         raise HTTPException(status_code=400, detail="Failed to scrape content from the provided URL.")
