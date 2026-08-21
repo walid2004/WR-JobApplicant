@@ -91,6 +91,11 @@
       position: sticky;
       top: 0;
       z-index: 40;
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease;
+    }
+
+    .navbar.navbar-hidden {
+      transform: translateY(-100%);
     }
 
     .nav-left {
@@ -131,7 +136,6 @@
       gap: 10px;
     }
 
-    
     .icon {
       width: 15px;
       height: 15px;
@@ -144,7 +148,6 @@
       vertical-align: middle;
     }
 
-    
     .theme-toggle-btn {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -164,7 +167,6 @@
       background: var(--surface-hover);
     }
 
-    
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -173,14 +175,63 @@
       width: 100%;
     }
 
-    
+    .hero-controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 16px;
+      margin-bottom: 20px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 860px) {
+      .hero-controls-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .autonomous-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .autonomous-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .autonomous-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .autonomous-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
     .command-panel {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 20px 24px;
-      margin-bottom: 20px;
       box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .command-header {
@@ -897,16 +948,35 @@
 
   <div class="container">
 
-    <div class="command-panel">
-      <div class="command-header">
-        <div class="command-title">Job Application Pipeline</div>
-      </div>
-      <div class="url-input-bar">
-        <input type="text" id="urlField" class="url-input" placeholder="Paste job URL...">
-        <button class="btn btn-primary" onclick="handleAnalyzeUrl()">
-          <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          Analyze & Stage
+    <div class="hero-controls-grid">
+      <div class="autonomous-card">
+        <div class="autonomous-header">
+          <div class="autonomous-title">
+            <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            Full Autonomous Mode
+          </div>
+          <span class="tag-mono" id="autoModeStatusTag" style="font-size: 10px; color: var(--text-dim);">Ready</span>
+        </div>
+        <div class="autonomous-desc">
+          The system will automatically look for passing positions on its own and fully apply to them.
+        </div>
+        <button class="btn btn-accent" id="btnAutonomousAction" onclick="toggleAutonomousMode()" style="width: 100%; padding: 8px 12px; font-weight: 600; font-size: 12.5px; display: flex; align-items: center; justify-content: center; gap: 7px;">
+          <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Start Autonomous Mode
         </button>
+      </div>
+
+      <div class="command-panel" style="margin-bottom: 0;">
+        <div class="command-header">
+          <div class="command-title">Job Application Pipeline</div>
+        </div>
+        <div class="url-input-bar">
+          <input type="text" id="urlField" class="url-input" placeholder="Paste job URL...">
+          <button class="btn btn-primary" onclick="handleAnalyzeUrl()">
+            <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            Analyze & Stage
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1126,7 +1196,7 @@
         </div>
 
         <div id="settings-tab-appearance" class="tab-content">
-          <div class="generic-card" style="max-width: 600px;">
+          <div class="generic-card" style="max-width: 600px; margin-bottom: 16px;">
             <div class="section-title-sm">Appearance & Color Scheme</div>
             <p style="font-size: 12.5px; color: var(--text-dim); margin-bottom: 16px;">
               Customize your workspace theme and visual styling preferences.
@@ -1141,6 +1211,25 @@
                 <span id="themeLabel">Dark Mode</span>
               </button>
             </div>
+          </div>
+
+          <div class="generic-card" style="max-width: 600px;">
+            <div class="section-title-sm">Local AI & LLaMA Model Selection</div>
+            <p style="font-size: 12.5px; color: var(--text-dim); margin-bottom: 14px;">
+              Select whichever available LLaMA or Ollama model you want from your local machine to power candidate tailoring and fit evaluation.
+            </p>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px;">
+              <select id="localModelSelect" class="url-input" style="flex: 1; min-width: 220px; font-size: 12.5px; padding: 7px 10px;">
+                <option value="llama3.2:latest">llama3.2:latest (Default)</option>
+              </select>
+              <button class="btn btn-outline" onclick="loadAvailableModels()" title="Scan for locally installed models" style="font-size: 12px; padding: 7px 12px;">
+                Scan Local
+              </button>
+              <button class="btn btn-primary" onclick="saveSelectedModel()" style="font-size: 12px; padding: 7px 14px;">
+                Save Model
+              </button>
+            </div>
+            <div id="modelStatusMsg" style="font-size: 11.5px; color: var(--text-dim);"></div>
           </div>
         </div>
 
@@ -2274,6 +2363,70 @@
       }
     }
 
+    function toggleAutonomousMode() {
+      const tag = document.getElementById('autoModeStatusTag');
+      if (tag) {
+        tag.innerText = 'Scanning & Applying...';
+        tag.style.color = '#10b981';
+        tag.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+      }
+      showToast('Autonomous Mode initiated: scanning matching roles across portals and tailoring applications.');
+      runDiscovery();
+    }
+
+    async function loadAvailableModels() {
+      try {
+        const res = await fetch('/api/models');
+        const data = await res.json();
+        const select = document.getElementById('localModelSelect');
+        if (!select) return;
+        select.innerHTML = data.models.map(m => `
+          <option value="${m}" ${m === data.current_model ? 'selected' : ''}>${m}${m.startsWith('llama') ? ' (LLaMA)' : ''}</option>
+        `).join('');
+        const msg = document.getElementById('modelStatusMsg');
+        if (msg) {
+          msg.innerText = data.ollama_online ? `Connected to local engine (${data.models.length} models ready)` : `Local engine ready. Active model: ${data.current_model}`;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function saveSelectedModel() {
+      const select = document.getElementById('localModelSelect');
+      if (!select) return;
+      const val = select.value;
+      try {
+        const res = await fetch('/api/settings/model', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model: val })
+        });
+        if (res.ok) {
+          showToast(`AI Model set to: ${val}`, 'success');
+          const msg = document.getElementById('modelStatusMsg');
+          if (msg) msg.innerText = `Active Model: ${val}`;
+        } else {
+          showToast('Failed to update model preference.', 'error');
+        }
+      } catch (e) {
+        showToast('Error connecting to backend.', 'error');
+      }
+    }
+
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (!navbar) return;
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 60) {
+        navbar.classList.add('navbar-hidden');
+      } else {
+        navbar.classList.remove('navbar-hidden');
+      }
+      lastScrollY = currentScrollY;
+    }, { passive: true });
+
     function escapeStr(text) {
       if (!text) return '';
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
@@ -2287,6 +2440,7 @@
       await loadJobs();
       await loadPortals();
       await loadCookieStatus();
+      await loadAvailableModels();
     }
 
     window.onload = () => {

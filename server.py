@@ -75,9 +75,71 @@ class CookieImportRequest(BaseModel):
     portal: str
     cookie_data: str
 
+class UpdateModelRequest(BaseModel):
+    model: str
+
 @app.get("/api/health")
 def health_check():
     return {"status": "ok", "timestamp": datetime.now().isoformat()}
+
+@app.get("/api/models")
+def get_available_models():
+    default_llama_models = [
+        "llama3.2:latest",
+        "llama3.2:3b",
+        "llama3.2:1b",
+        "llama3.1:8b",
+        "llama3:8b",
+        "qwen2.5-coder:7b",
+        "mistral:7b",
+        "deepseek-r1:8b"
+    ]
+    detected_models = []
+    try:
+        import urllib.request
+        req = urllib.request.Request("http://localhost:11434/api/tags", headers={"User-Agent": "JobApplicantAgent/1.0"})
+        with urllib.request.urlopen(req, timeout=1.5) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            for m in data.get("models", []):
+                name = m.get("name")
+                if name and name not in detected_models:
+                    detected_models.append(name)
+    except Exception:
+        pass
+
+    combined = list(dict.fromkeys(detected_models + default_llama_models))
+    current_model = getattr(orchestrator.llm, "model", "llama3.2:latest")
+    if current_model not in combined:
+        combined.insert(0, current_model)
+
+    return {
+        "models": combined,
+        "current_model": current_model,
+        "ollama_online": len(detected_models) > 0
+    }
+
+@app.post("/api/settings/model")
+def update_selected_model(req: UpdateModelRequest):
+    model_name = req.model.strip()
+    if not model_name:
+        raise HTTPException(status_code=400, detail="Model name cannot be empty")
+    
+    orchestrator.llm.model = model_name
+    cfg_path = os.path.join(BASE_DIR, "config.yaml")
+    if os.path.exists(cfg_path):
+        try:
+            import yaml
+            with open(cfg_path, "r", encoding="utf-8") as f:
+                cfg = yaml.safe_load(f) or {}
+            if "llm" not in cfg:
+                cfg["llm"] = {}
+            cfg["llm"]["model"] = model_name
+            with open(cfg_path, "w", encoding="utf-8") as f:
+                yaml.safe_dump(cfg, f)
+        except Exception as e:
+            print(f"[Server] Failed to write config.yaml: {e}")
+
+    return {"status": "ok", "model": model_name}
 
 @app.get("/", response_class=HTMLResponse)
 def get_dashboard():
