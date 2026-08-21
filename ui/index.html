@@ -397,7 +397,7 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 20px;
-      margin-bottom: 16px;
+      margin-bottom: 22px;
       box-shadow: var(--card-shadow);
       transition: background-color 0.2s ease, border-color 0.2s ease;
     }
@@ -442,12 +442,11 @@
     .fit-score-badge {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 12px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 6px;
-      background: var(--success-bg);
-      border: 1px solid var(--success-border);
-      color: var(--success-text);
+      font-weight: 500;
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+      padding: 0;
     }
 
     .eval-rationale {
@@ -528,8 +527,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
+      margin-top: 14px;
+      padding-top: 0;
       flex-wrap: wrap;
       gap: 8px;
     }
@@ -756,14 +755,14 @@
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
           <button id="stageAllDiscBtn" class="btn btn-primary" onclick="stageAllDiscovered()" style="font-size: 12px; padding: 6px 14px;">
-            Stage All Matches (&gt;70%)
+            Stage All Matches
           </button>
           <button class="btn btn-outline" onclick="closeDiscoverModal()" style="font-size: 12px; padding: 6px 12px;">
             Close
           </button>
         </div>
       </div>
-      <div style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;" id="discoverListContainer">
+      <div style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;" id="discoverListContainer">
         
       </div>
     </div>
@@ -1744,7 +1743,7 @@
 
     function renderDiscoveredCard(j, idx) {
       return `
-        <div id="discCard_${idx}" class="job-card" style="margin-bottom: 0; padding: 16px 20px; transition: all 0.35s ease;">
+        <div id="discCard_${idx}" class="job-card" style="margin-bottom: 0; padding: 20px 24px; transition: all 0.35s ease;">
           <div class="job-header-row" style="margin-bottom: 6px;">
             <div>
               <div class="job-title" style="font-size: 14.5px;">${escapeStr(j.title)}</div>
@@ -1754,16 +1753,16 @@
                 <span class="tag-mono" style="color: #3b82f6; border-color: rgba(59, 130, 246, 0.3);">${escapeStr(j.portal.toUpperCase())}</span>
               </div>
             </div>
-            <div class="fit-score-badge" style="font-size: 12.5px; font-weight: 700; ${j.fit_score >= 90 ? 'color:#10b981; border-color:rgba(16,185,129,0.3);' : (j.fit_score >= 80 ? 'color:#3b82f6; border-color:rgba(59,130,246,0.3);' : 'color:#f59e0b; border-color:rgba(245,158,11,0.3);')}">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; color: var(--text-dim);">
               ${j.fit_score}% Match
             </div>
           </div>
-          <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px;">
+          <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
             ${escapeStr(j.description ? j.description.substring(0, 180) + '...' : '')}
           </div>
           <div id="discStatus_${idx}" style="display: none; font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; color: #3b82f6; margin-bottom: 8px;"></div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid var(--border);">
-            <a href="${escapeStr(j.url)}" target="_blank" class="btn btn-outline" style="font-size: 11.5px; padding: 4px 10px;">View Posting</a>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+            <a href="${escapeStr(j.url)}" target="_blank" class="btn btn-outline" style="font-size: 11.5px; padding: 5px 12px;">View Posting</a>
             <button id="discBtn_${idx}" class="btn btn-primary" onclick="stageDiscoveredJob(${idx})" style="font-size: 12px; padding: 6px 14px; font-weight: 600;">
               Stage & Tailor Application
             </button>
@@ -1866,7 +1865,7 @@
           const newCardsContainer = document.createElement('div');
           newCardsContainer.style.display = 'flex';
           newCardsContainer.style.flexDirection = 'column';
-          newCardsContainer.style.gap = '12px';
+          newCardsContainer.style.gap = '20px';
           newCardsContainer.innerHTML = newValidJobs.map((j, idx) => renderDiscoveredCard(j, startIdx + idx)).join('');
           footerEl.parentNode.insertBefore(newCardsContainer, footerEl);
         }
@@ -1977,23 +1976,23 @@
     }
 
     async function stageAllDiscovered() {
-      const highFitIndices = [];
+      const matchIndices = [];
       discoveredJobsCache.forEach((j, idx) => {
-        if ((j.fit_score || 0) >= 70) highFitIndices.push(idx);
+        matchIndices.push(idx);
       });
       
-      if (highFitIndices.length === 0) {
-        showToast('No matching positions with >= 70% fit score found.', 'info');
+      if (matchIndices.length === 0) {
+        showToast('No positions found to stage.', 'info');
         return;
       }
       
       const stageAllBtn = document.getElementById('stageAllDiscBtn');
       if (stageAllBtn) {
         stageAllBtn.disabled = true;
-        stageAllBtn.innerHTML = `<span class="btn-spinner"></span> Staging ${highFitIndices.length} Positions...`;
+        stageAllBtn.innerHTML = `<span class="btn-spinner"></span> Staging ${matchIndices.length} Positions...`;
       }
       
-      for (const idx of highFitIndices) {
+      for (const idx of matchIndices) {
         const cardEl = document.getElementById(`discCard_${idx}`);
         if (cardEl && !cardEl.classList.contains('job-card-fall-away')) {
           await stageDiscoveredJob(idx);
@@ -2003,7 +2002,7 @@
       
       if (stageAllBtn) {
         stageAllBtn.disabled = false;
-        stageAllBtn.innerHTML = `Stage All Matches (&gt;70%)`;
+        stageAllBtn.innerHTML = `Stage All Matches`;
       }
       showToast(`Staged all matching positions to your queue.`, 'success');
     }
