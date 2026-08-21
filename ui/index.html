@@ -468,6 +468,32 @@
       background: var(--surface-hover);
     }
 
+    .job-details-expandable {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .job-details-expandable.expanded {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .job-details-inner {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 0;
+      transition: padding 0.3s ease;
+    }
+
+    .job-details-expandable.expanded .job-details-inner {
+      padding-top: 14px;
+      padding-bottom: 6px;
+    }
+
     .eval-rationale {
       font-size: 12.5px;
       color: var(--text-muted);
@@ -1235,31 +1261,43 @@
                 </div>
               </div>
 
-              <div class="eval-rationale">
-                <strong>Evaluation:</strong> ${escapeStr(job.fit_rationale || '')}
-              </div>
-
-              <div class="section-title-sm">Selected Projects (${pids.length})</div>
-              <div class="projects-summary-grid">
-                ${pids.map(pid => {
-                  const p = (vaultStore.projects || []).find(x => x.id === pid) || { title: pid, domain: 'Project' };
-                  return `
-                    <div class="proj-box">
-                      <div class="proj-box-title">${escapeStr(p.title)}</div>
-                      <div class="proj-box-domain">${escapeStr(p.tech_stack || p.domain)}</div>
+              <div class="job-details-expandable" id="details_${job.id}">
+                <div class="job-details-inner">
+                  <div>
+                    <div class="section-title-sm">Cover Letter Draft (DIN 5008)</div>
+                    <div class="letter-editor-box">
+                      <textarea class="letter-editor-textarea" id="txt_${job.id}" onchange="updateCoverLetter('${job.id}')">${escapeStr(job.anschreiben_text || '')}</textarea>
                     </div>
-                  `;
-                }).join('')}
-              </div>
+                  </div>
 
-              <div class="section-title-sm">Tailored Stack</div>
-              <div class="skills-row">
-                ${skills.map(s => `<span class="tag-mono">${escapeStr(s)}</span>`).join('')}
-              </div>
+                  <div>
+                    <div class="section-title-sm">Stack</div>
+                    <div class="skills-row">
+                      ${skills.map(s => `<span class="tag-mono">${escapeStr(s)}</span>`).join('')}
+                    </div>
+                  </div>
 
-              <div class="section-title-sm">Cover Letter Draft (DIN 5008)</div>
-              <div class="letter-editor-box">
-                <textarea class="letter-editor-textarea" id="txt_${job.id}" onchange="updateCoverLetter('${job.id}')">${escapeStr(job.anschreiben_text || '')}</textarea>
+                  <div>
+                    <div class="section-title-sm">Selected Projects (${pids.length})</div>
+                    <div class="projects-summary-grid">
+                      ${pids.map(pid => {
+                        const p = (vaultStore.projects || []).find(x => x.id === pid) || { title: pid };
+                        return `
+                          <div class="proj-box" style="padding: 9px 12px;">
+                            <div class="proj-box-title" style="margin-bottom: 0;">${escapeStr(p.title)}</div>
+                          </div>
+                        `;
+                      }).join('')}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="section-title-sm">Evaluation</div>
+                    <div class="eval-rationale" style="margin-bottom: 0;">
+                      ${escapeStr(job.fit_rationale || '')}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="job-footer-bar">
@@ -1276,6 +1314,10 @@
                       Preview Letter
                     </button>
                   ` : ''}
+                  <button class="btn btn-outline" id="btn_details_${job.id}" onclick="toggleCardDetails('${job.id}')" style="display: flex; align-items: center; gap: 5px;">
+                    <svg class="icon" id="icon_details_${job.id}" viewBox="0 0 24 24" style="transition: transform 0.2s ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    Details
+                  </button>
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                   <a href="${escapeStr(job.url)}" target="_blank" class="btn btn-outline" style="color: var(--text-dim);">
@@ -2204,6 +2246,16 @@
       if (tabName === 'vault') { loadVault(); loadDocumentsVault(); loadKeywords(); }
       if (tabName === 'portals') { loadPortals(); loadCookieStatus(); }
       if (tabName === 'history') loadHistory();
+    }
+
+    function toggleCardDetails(jobId) {
+      const el = document.getElementById(`details_${jobId}`);
+      const icon = document.getElementById(`icon_details_${jobId}`);
+      if (!el) return;
+      const isExpanded = el.classList.toggle('expanded');
+      if (icon) {
+        icon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
     }
 
     function switchView(viewName) {
