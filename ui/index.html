@@ -471,7 +471,7 @@
     .job-details-expandable {
       display: grid;
       grid-template-rows: 0fr;
-      transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      transition: grid-template-rows 0.55s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease;
       opacity: 0;
     }
 
@@ -486,7 +486,7 @@
       flex-direction: column;
       gap: 12px;
       padding-top: 0;
-      transition: padding 0.3s ease;
+      transition: padding 0.55s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     .job-details-expandable.expanded .job-details-inner {
@@ -1237,6 +1237,9 @@
         container.innerHTML = appJobs.map(job => {
           const pids = job.selected_project_ids || [];
           const skills = job.tailored_skills || [];
+          const topSkills = skills.slice(0, 4);
+          const remainingSkills = skills.slice(4);
+          const remainingTooltip = remainingSkills.join(', ');
           const cvFile = job.cv_pdf_path ? job.cv_pdf_path.split('\\').pop().split('/').pop() : '';
           const letterFile = job.anschreiben_pdf_path ? job.anschreiben_pdf_path.split('\\').pop().split('/').pop() : '';
 
@@ -1263,19 +1266,16 @@
 
               <div class="job-details-expandable" id="details_${job.id}">
                 <div class="job-details-inner">
-                  <div>
-                    <div class="section-title-sm">Cover Letter Draft (DIN 5008)</div>
-                    <div class="letter-editor-box">
-                      <textarea class="letter-editor-textarea" id="txt_${job.id}" onchange="updateCoverLetter('${job.id}')">${escapeStr(job.anschreiben_text || '')}</textarea>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="section-title-sm">Stack</div>
+                  ${skills.length > 0 ? `
                     <div class="skills-row">
-                      ${skills.map(s => `<span class="tag-mono">${escapeStr(s)}</span>`).join('')}
+                      ${topSkills.map(s => `<span class="tag-mono">${escapeStr(s)}</span>`).join('')}
+                      ${remainingSkills.length > 0 ? `
+                        <span class="tag-mono" title="${escapeStr(remainingTooltip)}" style="cursor: help; font-weight: 600;">
+                          +${remainingSkills.length}
+                        </span>
+                      ` : ''}
                     </div>
-                  </div>
+                  ` : ''}
 
                   <div>
                     <div class="section-title-sm">Selected Projects (${pids.length})</div>
@@ -1295,6 +1295,13 @@
                     <div class="section-title-sm">Evaluation</div>
                     <div class="eval-rationale" style="margin-bottom: 0;">
                       ${escapeStr(job.fit_rationale || '')}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="section-title-sm">Cover Letter Draft</div>
+                    <div class="letter-editor-box">
+                      <textarea class="letter-editor-textarea" id="txt_${job.id}" onchange="updateCoverLetter('${job.id}')">${escapeStr(job.anschreiben_text || '')}</textarea>
                     </div>
                   </div>
                 </div>
