@@ -831,9 +831,9 @@
   
   <nav class="navbar">
     <div class="nav-left">
-      <div class="brand-mark">P</div>
+      <div class="brand-mark">ZM</div>
       <div>
-        <div class="brand-title">Portal</div>
+        <div class="brand-title">ZM Job Applicant</div>
       </div>
       <span class="brand-subtitle">Career Application Engine</span>
     </div>
@@ -842,17 +842,15 @@
         <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         Discover Jobs
       </button>
-      <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle color theme">
-        <svg class="icon" id="themeIconSvg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-        <span id="themeLabel">Dark Mode</span>
+      <button class="btn btn-outline" onclick="openSettingsModal()" style="font-size: 12.5px; font-weight: 600; padding: 6px 14px; display: flex; align-items: center; gap: 6px;">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Settings
       </button>
     </div>
   </nav>
 
-  
   <div class="container">
 
-    
     <div class="command-panel">
       <div class="command-header">
         <div class="command-title">Job Application Pipeline</div>
@@ -904,7 +902,6 @@
       </div>
     </div>
 
-    
     <div class="metrics-grid">
       <div class="metric-box">
         <div class="metric-label">Discovered</div>
@@ -924,177 +921,195 @@
       </div>
     </div>
 
-    
-    <div class="tabs-bar">
-      <button class="tab-button active" onclick="switchView('queue')">
-        Staged Applications <span class="tab-badge" id="badgeStaged">0</span>
-      </button>
-      <button class="tab-button" onclick="switchView('vault')">
-        Applicant Profile
-      </button>
-      <button class="tab-button" onclick="switchView('portals')">
-        Session & Portals
-      </button>
-      <button class="tab-button" onclick="switchView('history')">
-        Submission History
-      </button>
+    <div id="queueList">
+      <p style="text-align: center; color: var(--text-dim); padding: 40px; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">
+        No staged applications. Paste a job URL above or click 'Discover Jobs'.
+      </p>
     </div>
 
-    
-    <div id="tab-queue" class="tab-content active">
-      <div id="queueList">
-        <p style="text-align: center; color: var(--text-dim); padding: 40px; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">
-          No staged applications. Paste a job URL above or click 'Discover Jobs'.
-        </p>
+  </div>
+
+  <div id="settingsModal" class="modal-overlay" style="display: none;">
+    <div class="modal-container" style="max-width: 1020px; max-height: 90vh;">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title-text">Control Center Settings</div>
+          <div class="modal-subtitle-text">Applicant Vault, Active Portal Sessions, Submission History, and Preferences</div>
+        </div>
+        <button class="btn btn-outline" onclick="closeSettingsModal()" style="font-size: 12px; padding: 6px 12px;">
+          Close
+        </button>
       </div>
-    </div>
 
-    
-    <div id="tab-vault" class="tab-content">
-      <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 16px;">
-        
-        <div class="generic-card">
-          <div>
-            <div class="section-title-sm">Candidate Information</div>
-            <div id="profileSummaryView" style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Loading...</div>
-          </div>
-        </div>
+      <div class="tabs-bar" style="padding: 0 20px; margin-bottom: 0; background: var(--surface); border-bottom: 1px solid var(--border);">
+        <button id="setTabBtn_vault" class="tab-button active" onclick="switchSettingsTab('vault')">
+          Applicant Profile & Vault
+        </button>
+        <button id="setTabBtn_portals" class="tab-button" onclick="switchSettingsTab('portals')">
+          Session & Portals
+        </button>
+        <button id="setTabBtn_history" class="tab-button" onclick="switchSettingsTab('history')">
+          Submission History
+        </button>
+        <button id="setTabBtn_appearance" class="tab-button" onclick="switchSettingsTab('appearance')">
+          Appearance & Theme
+        </button>
+      </div>
 
+      <div style="padding: 20px; overflow-y: auto; flex: 1;">
         
-        <div class="generic-card">
-          <div>
-            <div class="section-title-sm">Verified Projects Library (8 Projects)</div>
-            <div id="projectsVaultView" style="display: flex; flex-direction: column; gap: 10px;">Loading...</div>
-          </div>
-        </div>
-
-        
-        <div class="generic-card" style="grid-column: 1 / -1;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+        <div id="settings-tab-vault" class="tab-content active">
+          <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 16px;">
+            <div class="generic-card">
               <div>
-                <div class="section-title-sm">Master Documents Vault</div>
-                <div style="font-size: 12px; color: var(--text-dim);">Static certificates, transcripts, enrollment proofs, and work samples. Upload once; the system selects and attaches them automatically based on ATS requirements and job language (DE vs EN).</div>
+                <div class="section-title-sm">Candidate Information</div>
+                <div id="profileSummaryView" style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Loading...</div>
               </div>
-              <button class="btn btn-primary" onclick="document.getElementById('docUploadModal').style.display='flex'" style="font-size: 11.5px; padding: 5px 12px;">
-                + Add Document
+            </div>
+
+            <div class="generic-card">
+              <div>
+                <div class="section-title-sm">Verified Projects Library (8 Projects)</div>
+                <div id="projectsVaultView" style="display: flex; flex-direction: column; gap: 10px;">Loading...</div>
+              </div>
+            </div>
+
+            <div class="generic-card" style="grid-column: 1 / -1;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                  <div>
+                    <div class="section-title-sm">Master Documents Vault</div>
+                    <div style="font-size: 12px; color: var(--text-dim);">Static certificates, transcripts, enrollment proofs, and work samples. Upload once; the system selects and attaches them automatically based on ATS requirements and job language (DE vs EN).</div>
+                  </div>
+                  <button class="btn btn-primary" onclick="document.getElementById('docUploadModal').style.display='flex'" style="font-size: 11.5px; padding: 5px 12px;">
+                    + Add Document
+                  </button>
+                </div>
+                <div id="documentsVaultList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 12px;"></div>
+              </div>
+            </div>
+
+            <div class="generic-card" style="grid-column: 1 / -1;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                  <div>
+                    <div class="section-title-sm">Target Keywords & Search Matrix</div>
+                    <div style="font-size: 12px; color: var(--text-dim);">The scraper uses this catalog to match German internships across Personio, Arbeitnow, BMW, Siemens, Bosch and LinkedIn.</div>
+                  </div>
+                  <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline" onclick="autoGenerateKeywords()" style="font-size: 11.5px; padding: 5px 10px;">Auto-Generate from Profile</button>
+                    <button class="btn btn-primary" onclick="saveKeywordsToServer()" style="font-size: 11.5px; padding: 5px 12px;">Save Keywords</button>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                  <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Target Roles & Levels</div>
+                    <div id="rolesTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
+                    <div style="display: flex; gap: 6px;">
+                      <input type="text" id="newRoleInput" class="login-input" placeholder="e.g. Praktikant, KI..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('roles', 'newRoleInput')">
+                      <button class="btn btn-outline" onclick="addKeyword('roles', 'newRoleInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
+                    </div>
+                  </div>
+
+                  <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Technical Domains & Skills</div>
+                    <div id="domainsTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
+                    <div style="display: flex; gap: 6px;">
+                      <input type="text" id="newDomainInput" class="login-input" placeholder="e.g. Computer Vision..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('domains_and_tech', 'newDomainInput')">
+                      <button class="btn btn-outline" onclick="addKeyword('domains_and_tech', 'newDomainInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
+                    </div>
+                  </div>
+
+                  <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Locations & Work Modes</div>
+                    <div id="locationsTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
+                    <div style="display: flex; gap: 6px;">
+                      <input type="text" id="newLocationInput" class="login-input" placeholder="e.g. München, Remote..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('locations', 'newLocationInput')">
+                      <button class="btn btn-outline" onclick="addKeyword('locations', 'newLocationInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="settings-tab-portals" class="tab-content">
+          <div class="generic-card" style="margin-bottom: 20px; border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.03);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="font-weight: 600; font-size: 14.5px; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                Active Session & Cookie Authenticator
+              </div>
+              <span class="tag-mono" id="cookieStatusTag" style="color: #3b82f6; border-color: rgba(59, 130, 246, 0.3);">Checking Session...</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">
+              Paste your <strong>LinkedIn session token (<code>li_at</code>)</strong>, Indeed cookie string, or Cookie JSON below. The bot will automatically inject your authenticated session into Playwright for autonomous submissions.
+            </p>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+              <select id="cookiePortalSelect" class="url-input" style="width: 170px; padding: 7px 10px; font-size: 12px;">
+                <option value="linkedin">LinkedIn</option>
+                <option value="indeed">Indeed</option>
+                <option value="google">Google / General</option>
+              </select>
+              <input type="text" id="cookieDataField" class="url-input" placeholder="Paste li_at token, raw cookie header, or JSON..." style="flex: 1; font-size: 12px;">
+              <button class="btn btn-primary" onclick="handleImportCookies()" style="padding: 7px 18px; font-size: 12px; font-weight: 600;">
+                Save & Authenticate
               </button>
             </div>
-
-            
-            <div id="documentsVaultList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 12px;">
-              
+            <div style="font-size: 11px; color: var(--text-dim);">
+              Tip: How to get LinkedIn token in 10 seconds: In Chrome, visit LinkedIn &rarr; Press <code>F12</code> &rarr; <strong>Application</strong> &rarr; <strong>Cookies</strong> &rarr; <code>https://www.linkedin.com</code> &rarr; Click <code>li_at</code>, copy its value and paste it above.
             </div>
+          </div>
+
+          <div class="cards-grid" id="portalsList"></div>
+        </div>
+
+        <div id="settings-tab-history" class="tab-content">
+          <div class="table-box">
+            <table class="standard-table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Role</th>
+                  <th>Location</th>
+                  <th>Portal</th>
+                  <th>Fit</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Documents & Actions</th>
+                </tr>
+              </thead>
+              <tbody id="historyTable">
+                <tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 24px;">No submitted applications recorded yet.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        
-        <div class="generic-card" style="grid-column: 1 / -1;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+        <div id="settings-tab-appearance" class="tab-content">
+          <div class="generic-card" style="max-width: 600px;">
+            <div class="section-title-sm">Appearance & Color Scheme</div>
+            <p style="font-size: 12.5px; color: var(--text-dim); margin-bottom: 16px;">
+              Customize your workspace theme and visual styling preferences.
+            </p>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
               <div>
-                <div class="section-title-sm">Target Keywords & Search Matrix</div>
-                <div style="font-size: 12px; color: var(--text-dim);">The scraper uses this catalog to match German internships across Personio, Arbeitnow, BMW, Siemens, Bosch and LinkedIn.</div>
+                <div style="font-weight: 600; font-size: 13.5px; color: var(--text-main); margin-bottom: 3px;" id="settingsThemeTitle">Dark Mode</div>
+                <div style="font-size: 11.5px; color: var(--text-dim);">Toggle high-contrast Dark or Light workspace layout</div>
               </div>
-              <div style="display: flex; gap: 8px;">
-                <button class="btn btn-outline" onclick="autoGenerateKeywords()" style="font-size: 11.5px; padding: 5px 10px;">Auto-Generate from Profile</button>
-                <button class="btn btn-primary" onclick="saveKeywordsToServer()" style="font-size: 11.5px; padding: 5px 12px;">Save Keywords</button>
-              </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-              
-              <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-                <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Target Roles & Levels</div>
-                <div id="rolesTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
-                <div style="display: flex; gap: 6px;">
-                  <input type="text" id="newRoleInput" class="login-input" placeholder="e.g. Praktikant, KI..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('roles', 'newRoleInput')">
-                  <button class="btn btn-outline" onclick="addKeyword('roles', 'newRoleInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
-                </div>
-              </div>
-
-              
-              <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-                <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Technical Domains & Skills</div>
-                <div id="domainsTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
-                <div style="display: flex; gap: 6px;">
-                  <input type="text" id="newDomainInput" class="login-input" placeholder="e.g. Computer Vision..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('domains_and_tech', 'newDomainInput')">
-                  <button class="btn btn-outline" onclick="addKeyword('domains_and_tech', 'newDomainInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
-                </div>
-              </div>
-
-              
-              <div style="background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-                <div style="font-weight: 600; font-size: 12.5px; margin-bottom: 8px; color: var(--text-main);">Locations & Work Modes</div>
-                <div id="locationsTagsContainer" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 32px;"></div>
-                <div style="display: flex; gap: 6px;">
-                  <input type="text" id="newLocationInput" class="login-input" placeholder="e.g. München, Remote..." style="font-size: 11.5px; padding: 4px 8px;" onkeydown="if(event.key==='Enter') addKeyword('locations', 'newLocationInput')">
-                  <button class="btn btn-outline" onclick="addKeyword('locations', 'newLocationInput')" style="font-size: 11px; padding: 4px 8px;">+ Add</button>
-                </div>
-              </div>
+              <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle color theme" style="padding: 8px 16px; font-size: 12.5px;">
+                <svg class="icon" id="themeIconSvg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <span id="themeLabel">Dark Mode</span>
+              </button>
             </div>
           </div>
         </div>
+
       </div>
     </div>
-
-    
-    <div id="tab-portals" class="tab-content">
-      
-      <div class="generic-card" style="margin-bottom: 20px; border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.03);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <div style="font-weight: 600; font-size: 14.5px; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
-            Active Session & Cookie Authenticator
-          </div>
-          <span class="tag-mono" id="cookieStatusTag" style="color: #3b82f6; border-color: rgba(59, 130, 246, 0.3);">Checking Session...</span>
-        </div>
-        <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">
-          Paste your <strong>LinkedIn session token (<code>li_at</code>)</strong>, Indeed cookie string, or Cookie JSON below. The bot will automatically inject your authenticated session into Playwright for autonomous submissions.
-        </p>
-        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-          <select id="cookiePortalSelect" class="url-input" style="width: 170px; padding: 7px 10px; font-size: 12px;">
-            <option value="linkedin">LinkedIn</option>
-            <option value="indeed">Indeed</option>
-            <option value="google">Google / General</option>
-          </select>
-          <input type="text" id="cookieDataField" class="url-input" placeholder="Paste li_at token, raw cookie header, or JSON..." style="flex: 1; font-size: 12px;">
-          <button class="btn btn-primary" onclick="handleImportCookies()" style="padding: 7px 18px; font-size: 12px; font-weight: 600;">
-            Save & Authenticate
-          </button>
-        </div>
-        <div style="font-size: 11px; color: var(--text-dim);">
-          Tip: How to get LinkedIn token in 10 seconds: In Chrome, visit LinkedIn &rarr; Press <code>F12</code> &rarr; <strong>Application</strong> &rarr; <strong>Cookies</strong> &rarr; <code>https://www.linkedin.com</code> &rarr; Click <code>li_at</code>, copy its value and paste it above.
-        </div>
-      </div>
-
-      <div class="cards-grid" id="portalsList">
-        
-      </div>
-    </div>
-
-    
-    <div id="tab-history" class="tab-content">
-      <div class="table-box">
-        <table class="standard-table">
-          <thead>
-            <tr>
-              <th>Company</th>
-              <th>Role</th>
-              <th>Location</th>
-              <th>Portal</th>
-              <th>Fit</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Documents & Actions</th>
-            </tr>
-          </thead>
-          <tbody id="historyTable">
-            <tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 24px;">No submitted applications recorded yet.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  </div>
 
   </div>
 
@@ -1120,12 +1135,15 @@
       localStorage.setItem('portal_theme', theme);
       const icon = document.getElementById('themeIconSvg');
       const label = document.getElementById('themeLabel');
+      const title = document.getElementById('settingsThemeTitle');
       if (theme === 'light') {
-        icon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
-        label.innerText = 'Dark Mode';
+        if (icon) icon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+        if (label) label.innerText = 'Switch to Dark Mode';
+        if (title) title.innerText = 'Current: Light Theme';
       } else {
-        icon.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
-        label.innerText = 'Light Mode';
+        if (icon) icon.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
+        if (label) label.innerText = 'Switch to Light Mode';
+        if (title) title.innerText = 'Current: Dark Theme';
       }
     }
 
@@ -2152,19 +2170,41 @@
       }, 4500);
     }
 
-    function switchView(viewName) {
-      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    function openSettingsModal(tab = 'vault') {
+      const modal = document.getElementById('settingsModal');
+      if (modal) modal.style.display = 'flex';
+      switchSettingsTab(tab);
+    }
 
-      const btn = Array.from(document.querySelectorAll('.tab-button')).find(b => b.getAttribute('onclick')?.includes(viewName));
+    function closeSettingsModal() {
+      const modal = document.getElementById('settingsModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function switchSettingsTab(tabName) {
+      const modal = document.getElementById('settingsModal');
+      if (!modal) return;
+      modal.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      modal.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      const btn = document.getElementById(`setTabBtn_${tabName}`);
       if (btn) btn.classList.add('active');
 
-      const content = document.getElementById(`tab-${viewName}`);
+      const content = document.getElementById(`settings-tab-${tabName}`);
       if (content) content.classList.add('active');
 
-      if (viewName === 'vault') { loadVault(); loadDocumentsVault(); loadKeywords(); }
-      if (viewName === 'portals') loadPortals();
-      if (viewName === 'history') loadHistory();
+      if (tabName === 'vault') { loadVault(); loadDocumentsVault(); loadKeywords(); }
+      if (tabName === 'portals') { loadPortals(); loadCookieStatus(); }
+      if (tabName === 'history') loadHistory();
+    }
+
+    function switchView(viewName) {
+      if (viewName === 'queue') {
+        loadJobs();
+        loadStats();
+      } else {
+        openSettingsModal(viewName);
+      }
     }
 
     function escapeStr(text) {
