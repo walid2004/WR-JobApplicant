@@ -75,6 +75,10 @@ class CookieImportRequest(BaseModel):
     portal: str
     cookie_data: str
 
+@app.get("/api/health")
+def health_check():
+    return {"status": "ok", "timestamp": datetime.now().isoformat()}
+
 @app.get("/", response_class=HTMLResponse)
 def get_dashboard():
     index_file = os.path.join(UI_DIR, "index.html")
