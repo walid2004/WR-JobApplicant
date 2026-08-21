@@ -314,7 +314,7 @@
     
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 12px;
       margin-bottom: 20px;
     }
@@ -856,7 +856,10 @@
       </div>
     </div>
     <div class="nav-right">
-      <button class="btn btn-outline" onclick="openSettingsModal()" title="Settings" style="padding: 6px 10px; display: flex; align-items: center; justify-content: center;">
+      <button class="btn btn-outline" onclick="openManualStageModal()" title="Manually Add Job Details / Description" style="padding: 6px 10px; display: flex; align-items: center; justify-content: center;">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+      </button>
+      <button class="btn btn-outline" onclick="openSettingsModal()" title="Settings & Applicant Profile" style="padding: 6px 10px; display: flex; align-items: center; justify-content: center;">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
       </button>
       <button class="btn btn-accent" onclick="runDiscovery()" style="font-size: 12.5px; font-weight: 600; padding: 6px 14px;">
@@ -877,10 +880,6 @@
         <button class="btn btn-primary" onclick="handleAnalyzeUrl()">
           <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
           Analyze & Stage
-        </button>
-        <button class="btn btn-outline" onclick="openManualStageModal()" title="Paste job details directly">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
-          Paste Job Text
         </button>
       </div>
     </div>
@@ -930,10 +929,6 @@
       <div class="metric-box">
         <div class="metric-label">Submitted</div>
         <div class="metric-value" id="valApplied">0</div>
-      </div>
-      <div class="metric-box">
-        <div class="metric-label">Avg Match Score</div>
-        <div class="metric-value" id="valAvgScore">0%</div>
       </div>
     </div>
 
@@ -1195,8 +1190,8 @@
         document.getElementById('valDiscovered').innerText = data.total_discovered || 0;
         document.getElementById('valStaged').innerText = data.staged || 0;
         document.getElementById('valApplied').innerText = data.applied || 0;
-        document.getElementById('valAvgScore').innerText = `${data.avg_fit_score || 0}%`;
-        document.getElementById('badgeStaged').innerText = data.staged || 0;
+        const badgeEl = document.getElementById('badgeStaged');
+        if (badgeEl) badgeEl.innerText = data.staged || 0;
       } catch (e) {
         console.error(e);
       }
