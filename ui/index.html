@@ -190,37 +190,38 @@
     }
 
     .autonomous-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: #2563eb;
+      border: 1px solid #1d4ed8;
       border-radius: 8px;
       padding: 18px 20px;
-      box-shadow: var(--card-shadow);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      color: #ffffff;
     }
 
     .autonomous-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .autonomous-title {
-      font-size: 14.5px;
+      font-size: 15px;
       font-weight: 600;
-      color: var(--text-main);
+      color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
     }
 
     .autonomous-desc {
-      font-size: 12px;
-      color: var(--text-muted);
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.92);
       line-height: 1.45;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .command-panel {
@@ -952,16 +953,16 @@
       <div class="autonomous-card">
         <div class="autonomous-header">
           <div class="autonomous-title">
-            <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <svg class="icon" viewBox="0 0 24 24" style="stroke: #ffffff; fill: #ffffff; width: 16px; height: 16px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             Full Autonomous Mode
           </div>
         </div>
         <div class="autonomous-desc">
           The system will automatically look for passing positions on its own and fully apply to them.
         </div>
-        <button class="btn" id="btnAutonomousAction" onclick="toggleAutonomousMode()" style="width: 100%; padding: 9px 14px; background: #2563eb; color: #ffffff; border: 1px solid #2563eb; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 7px; border-radius: 6px; cursor: pointer;">
-          <svg class="icon" viewBox="0 0 24 24" style="stroke: #ffffff; width: 15px; height: 15px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          <span style="color: #ffffff;">Start Autonomous Mode</span>
+        <button class="btn" id="btnAutonomousAction" onclick="toggleAutonomousMode()" style="width: 100%; padding: 9px 14px; background: #ffffff; color: #2563eb; border: none; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 7px; border-radius: 6px; cursor: pointer;">
+          <svg class="icon" viewBox="0 0 24 24" style="stroke: #2563eb; width: 15px; height: 15px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span style="color: #2563eb;">Start Autonomous Mode</span>
         </button>
       </div>
 
